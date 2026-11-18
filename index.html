@@ -121,26 +121,27 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .menu-open .nav li:nth-child(4) a{transition-delay:.18s}.menu-open .nav li:nth-child(5) a{transition-delay:.24s}
 .nav .meta{display:flex;justify-content:space-between;margin-top:28px;font-family:var(--f-round);font-weight:500}
 
-/* ---------- Hero ---------- */
-.hero{position:relative;min-height:100svh;background:var(--olive);color:var(--cream);padding:calc(env(safe-area-inset-top) + 96px) var(--pad) 40px;display:flex;flex-direction:column;overflow:hidden}
-.hero .kicker{color:var(--rose);opacity:0;transform:translateY(10px);transition:all .8s .1s var(--ease)}
-.hero h1{margin-top:16px;font-size:clamp(2.3rem,11.4vw,7.2rem)}
+.menu-open .nav li:nth-child(6) a{transition-delay:.3s}
+/* ---------- Hero : l'arche qui s'ouvre ---------- */
+.hero{position:relative;height:200vh;background:var(--olive)}
+.hero .pin{position:sticky;top:0;height:100svh;overflow:hidden;color:var(--cream)}
+.hero .arch{position:absolute;inset:0;clip-path:inset(100% 7% 30% 7% round 50vw 50vw 0 0);will-change:clip-path}
+.hero .arch img{transform:scale(1.18);transform-origin:50% 40%;will-change:transform}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,36,22,.35) 0%,rgba(31,36,22,0) 30%,rgba(31,36,22,0) 45%,rgba(31,36,22,.86) 100%);opacity:0;pointer-events:none}
+.hero .kicker{position:absolute;left:var(--pad);right:var(--pad);top:calc(env(safe-area-inset-top) + 84px);color:var(--rose);display:flex;justify-content:space-between;opacity:0;transform:translateY(10px);transition:opacity .8s .15s var(--ease),transform .8s .15s var(--ease)}
+.hero h1{position:absolute;left:var(--pad);right:var(--pad);bottom:calc(env(safe-area-inset-bottom) + 74px);font-size:clamp(2.6rem,13.2vw,7.6rem);text-shadow:0 2px 24px rgba(31,36,22,.35)}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
 .hero h1 .line>span{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--ease)}
 .hero h1 .line:nth-child(2)>span{transition-delay:.08s}
 .hero h1 .line:nth-child(3)>span{transition-delay:.16s}
 .hero h1 em{font-style:normal;color:var(--coral)}
-.hero .pic{position:relative;margin-top:28px;border-radius:var(--r);overflow:visible;flex:1;min-height:42svh}
-.hero .pic .frame{position:absolute;inset:0;border-radius:var(--r);overflow:hidden;clip-path:inset(100% 0 0 0 round var(--r));transition:clip-path 1.3s .2s var(--ease-io)}
-.hero .pic img{transform:scale(1.25);transition:transform 1.8s .2s var(--ease)}
-.hero .badge{position:absolute;right:-6px;top:-54px;width:118px;aspect-ratio:1;opacity:0;transform:scale(.6) rotate(-40deg);transition:all 1s .8s var(--ease)}
-.hero .meta{display:flex;justify-content:space-between;align-items:center;margin-top:18px;font-family:var(--f-round);font-weight:500;font-size:.92rem;opacity:0;transition:opacity .8s 1s}
+.hero .meta{position:absolute;left:var(--pad);right:var(--pad);bottom:calc(env(safe-area-inset-bottom) + 26px);display:flex;justify-content:space-between;align-items:center;font-family:var(--f-round);font-weight:500;font-size:.9rem;opacity:0;transition:opacity .8s 1s}
 .hero .meta .dot{width:8px;height:8px;border-radius:50%;background:var(--coral);display:inline-block;margin-right:8px}
+.hero .meta .down{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(247,240,230,.5);animation:bob 2.4s var(--ease) infinite}
+@keyframes bob{50%{transform:translateY(5px)}}
+.hero .badge{position:absolute;left:0;top:0;width:104px;aspect-ratio:1;opacity:0;will-change:transform,opacity}
 body.ready .hero .kicker{opacity:1;transform:none}
 body.ready .hero h1 .line>span{transform:none}
-body.ready .hero .pic .frame{clip-path:inset(0 0 0 0 round var(--r))}
-body.ready .hero .pic img{transform:scale(1.04)}
-body.ready .hero .badge{opacity:1;transform:none}
 body.ready .hero .meta{opacity:1}
 
 /* Badge (anneau rotatif) */
@@ -179,110 +180,133 @@ section{position:relative;scroll-margin-top:64px}
 .vit .sub.on{opacity:1;transform:none}
 .vit .hint{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 92px);text-align:center;color:var(--rose);font-family:var(--f-round);font-weight:600;font-size:.85rem;transition:opacity .4s}
 
-/* ---------- Midi / Soir ---------- */
-.moment{background:var(--rose);color:var(--olive);overflow:hidden}
-.switch{position:relative;display:inline-grid;grid-template-columns:1fr 1fr;background:var(--cream);border-radius:999px;padding:5px;margin-top:22px}
-.switch button{position:relative;z-index:1;font-family:var(--f-round);font-weight:600;font-size:1rem;padding:.7em 1.6em;border-radius:999px;transition:color .4s}
-.switch .knob{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:var(--olive);transition:transform .6s var(--ease)}
-.switch[data-v="soir"] .knob{transform:translateX(100%)}
-.switch button[aria-pressed="true"]{color:var(--cream)}
-.moment .stage{position:relative;margin-top:30px;display:grid}
-.moment .panel{grid-area:1/1;transition:opacity .5s,visibility .5s}
-.moment .panel[hidden]{display:block;opacity:0;visibility:hidden;pointer-events:none}
-.moment .ph{position:relative;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden}
-.moment .panel .ph{clip-path:inset(0 0 0 0 round var(--r));transition:clip-path .9s var(--ease-io)}
-.moment .panel[hidden] .ph{clip-path:inset(0 0 0 100% round var(--r))}
-.moment .ph .when{position:absolute;left:14px;top:14px;background:var(--cream);color:var(--olive);font-family:var(--f-round);font-weight:600;font-size:.82rem;padding:.45em .9em;border-radius:999px}
-.moment h3{margin-top:24px;font-size:clamp(1.7rem,7.6vw,3.4rem)}
-.moment .txt{margin-top:12px;font-size:1.05rem;max-width:40ch}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.tags span{font-family:var(--f-round);font-weight:500;font-size:.88rem;padding:.4em .95em;border-radius:999px;border:1.5px solid var(--olive)}
+/* ---------- Midi / Soir : deux panneaux qui s'empilent ---------- */
+.svc{position:relative}
+.svc .panel{position:sticky;top:0;min-height:100svh;overflow:hidden}
+.svc .panel>.in{min-height:100svh;padding:calc(env(safe-area-inset-top) + 86px) var(--pad) calc(env(safe-area-inset-bottom) + 40px);display:flex;flex-direction:column;transform-origin:50% 0;will-change:transform,filter}
+.svc .p1{background:var(--cream);color:var(--olive)}
+.svc .p2{background:var(--olive);color:var(--cream);box-shadow:0 -30px 60px rgba(0,0,0,.25);border-radius:28px 28px 0 0}
+.svc .kicker{display:flex;justify-content:space-between}
+.svc .p1 .kicker{color:var(--coral-t)}
+.svc .p2 .kicker{color:var(--rose)}
+.svc .hour{margin-top:10px;font-size:clamp(5rem,31vw,17rem);line-height:.78;color:var(--coral-d)}
+.svc .p2 .hour{color:var(--coral)}
+.svc .ph{position:relative;margin-top:18px;aspect-ratio:4/3;border-radius:22px;overflow:hidden}
+.svc .ph img{transform:scale(1.08);transition:transform 1.6s var(--ease)}
+.svc .panel.in-view .ph img{transform:scale(1)}
+.svc h3{margin-top:20px;font-size:clamp(2rem,9.4vw,4rem)}
+.svc .txt{margin-top:10px;font-size:1.04rem;line-height:1.5;max-width:38ch}
+.svc .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.svc .tags span{font-family:var(--f-round);font-weight:500;font-size:.86rem;padding:.4em .95em;border-radius:999px;border:1.5px solid currentColor}
+.svc .go{margin-top:20px;align-self:flex-start}
 
-/* ---------- Carte ---------- */
-.carte{background:var(--cream);color:var(--olive)}
-.carte .head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
-.carte .head svg{width:34px;height:64px;flex:none;color:var(--olive)}
-.carte .sub{margin-top:10px;font-family:var(--f-round);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.9rem}
-.chips{position:sticky;top:calc(env(safe-area-inset-top) + 72px);z-index:5;margin:28px calc(var(--pad) * -1) 0;padding:10px var(--pad);display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;background:linear-gradient(var(--cream) 75%,rgba(247,240,230,0))}
-.chips::-webkit-scrollbar{display:none}
-.chips a{flex:none;display:inline-flex;align-items:center;min-height:44px;font-family:var(--f-round);font-weight:600;font-size:.92rem;padding:0 1.1em;border-radius:999px;border:1.5px solid var(--olive);transition:background .35s,color .35s}
-.chips a.on{background:var(--olive);color:var(--cream)}
-.cat{padding-top:34px;scroll-margin-top:156px}
-.cat h3{font-family:var(--f-round);font-weight:700;font-size:1.5rem;text-transform:uppercase;letter-spacing:.02em;display:flex;align-items:baseline;gap:12px}
-.cat h3 small{font-family:var(--f-body);font-weight:300;text-transform:none;letter-spacing:0;font-size:.95rem;color:var(--moss)}
-.cat .line-intro{margin-top:4px;color:var(--moss);font-size:.98rem}
-.item{display:grid;grid-template-columns:1fr auto;gap:2px 14px;padding:16px 0;border-bottom:1.5px dashed rgba(46,53,32,.22)}
-.item b{font-family:var(--f-round);font-weight:600;font-size:1.08rem;text-transform:uppercase;letter-spacing:.02em}
-.item i{font-style:normal;font-family:var(--f-round);font-weight:600;color:var(--coral-t);font-size:1.05rem;white-space:nowrap}
-.item p{grid-column:1/-1;font-size:.95rem;color:#55593F}
-.carte .note{margin-top:28px;font-size:.9rem;color:var(--moss)}
-.carte .cta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
+/* ---------- Les incontournables : rail de cartes ---------- */
+.sig{background:var(--cream);color:var(--olive);padding:96px 0 84px;overflow:hidden}
+.sig .hd{padding:0 var(--pad);display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.sig .kicker{color:var(--coral-t)}
+.sig h2{margin-top:12px}
+.sig .count{font-family:var(--f-round);font-weight:600;font-size:.95rem;white-space:nowrap}
+.sig .count b{font-family:var(--f-display);font-weight:400;font-size:1.6rem;color:var(--coral-t)}
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:30px var(--pad) 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab}
+.rail::-webkit-scrollbar{display:none}
+.dish{position:relative;flex:none;width:76vw;max-width:360px;aspect-ratio:3/4.2;border-radius:28px;overflow:hidden;scroll-snap-align:center;color:var(--cream);background:var(--olive);will-change:transform}
+.dish img{position:absolute;inset:0;width:118%;left:-9%;will-change:transform}
+.dish::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,36,22,0) 40%,rgba(31,36,22,.9))}
+.dish .n{position:absolute;left:20px;top:18px;z-index:2;font-family:var(--f-round);font-weight:600;font-size:.82rem;padding:.35em .8em;border-radius:999px;background:rgba(247,240,230,.92);color:var(--olive)}
+.dish .tx{position:absolute;left:20px;right:20px;bottom:20px;z-index:2}
+.dish h3{font-size:clamp(1.7rem,8vw,2.4rem)}
+.dish p{margin-top:8px;font-size:.95rem;line-height:1.4;max-width:30ch}
+.dish .pr{display:inline-block;margin-top:12px;font-family:var(--f-round);font-weight:700;font-size:1rem;padding:.4em .95em;border-radius:999px;background:var(--coral);color:var(--ink)}
+.dish.more{background:var(--coral);color:var(--ink);display:flex;flex-direction:column;justify-content:space-between;padding:24px}
+.dish.more::after{display:none}
+.dish.more svg{width:64px;height:70px;color:var(--ink)}
+.dish.more h3{font-size:clamp(1.9rem,9vw,2.8rem)}
+.dish.more span{font-family:var(--f-round);font-weight:600}
+.sig .foot{display:flex;align-items:center;gap:16px;margin:18px var(--pad) 0}
+.bar{flex:1;height:3px;border-radius:3px;background:rgba(46,53,32,.14);overflow:hidden}
+.bar i{display:block;height:100%;width:20%;background:var(--coral);border-radius:3px;transition:width .2s}
 
-/* ---------- Rituel (cartes empilées) ---------- */
-.rituel{background:var(--olive);color:var(--cream)}
-.rituel .h2 em{font-style:normal;color:var(--coral)}
-.stack{margin-top:40px}
-.card{position:sticky;top:calc(env(safe-area-inset-top) + 92px);border-radius:var(--r);padding:26px 24px 24px;min-height:330px;display:flex;flex-direction:column;margin-bottom:22px;
-  box-shadow:0 -18px 40px rgba(0,0,0,.18);transform-origin:50% 0}
-.card:nth-child(1){background:var(--coral);color:var(--ink)}
-.card:nth-child(2){background:var(--rose);color:var(--olive);top:calc(env(safe-area-inset-top) + 108px)}
-.card:nth-child(3){background:var(--cream);color:var(--olive);top:calc(env(safe-area-inset-top) + 124px)}
-.card .n{font-family:var(--f-display);font-size:3.6rem;line-height:.8}
-.card h3{margin-top:auto;font-family:var(--f-round);font-weight:700;font-size:1.7rem;line-height:1.05}
-.card p{margin-top:8px;font-size:1rem;max-width:32ch}
-.card .thumb{position:absolute;right:20px;top:22px;width:96px;height:120px;border-radius:18px;overflow:hidden;transform:rotate(5deg)}
-.card:nth-child(2) .thumb{transform:rotate(-5deg)}
+/* ---------- Ambiance : mosaïque ---------- */
+.amb{background:var(--olive);color:var(--cream);padding:100px var(--pad) 90px;overflow:hidden}
+.amb .kicker{color:var(--rose)}
+.amb h2{margin-top:12px}
+.amb h2 em{font-style:normal;color:var(--coral)}
+.mos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:38px}
+.mos .col{display:flex;flex-direction:column;gap:12px;will-change:transform}
+.mos .col:nth-child(2){margin-top:70px}
+.mos .ph{border-radius:20px;overflow:hidden;aspect-ratio:3/4}
+.mos .ph img{transition:transform 1.4s var(--ease)}
+.mos figcaption{margin-top:8px;font-family:var(--f-round);font-weight:500;font-size:.85rem;color:rgba(247,240,230,.78)}
+.amb .proof{display:grid;gap:10px;margin-top:40px}
+.amb .stamp{display:flex;align-items:center;gap:16px;border:1.5px solid rgba(247,240,230,.2);border-radius:22px;padding:16px}
+.amb .stamp .c{flex:none;width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:var(--coral);color:var(--ink);font-family:var(--f-display);font-size:1.3rem}
+.amb .stamp .c.alt{background:var(--rose);font-size:.95rem}
+.amb .stamp b{display:block;font-family:var(--f-round);font-weight:600;font-size:1.05rem}
+.amb .stamp span{font-size:.9rem;color:rgba(247,240,230,.82)}
+.amb .stamp small{display:block;margin-top:2px;font-size:.78rem;color:rgba(247,240,230,.7)}
+.amb .cta{margin-top:24px}
 
-/* ---------- Galerie ---------- */
-.gal{background:var(--cream);color:var(--olive);padding:96px 0}
-.gal .hd{padding:0 var(--pad);display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
-.gal .hd a{font-family:var(--f-round);font-weight:600;border-bottom:1.5px solid;display:inline-block;padding:12px 0 2px}
-.track{margin-top:30px;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--pad) 8px;scrollbar-width:none;cursor:grab}
-.track::-webkit-scrollbar{display:none}
-.track figure{flex:none;width:72vw;max-width:360px;scroll-snap-align:center}
-.track figure:nth-child(even){margin-top:42px}
-.track .ph{aspect-ratio:4/5;border-radius:var(--r);overflow:hidden}
-.track .ph img{transition:transform 1s var(--ease)}
-.track figcaption{margin-top:10px;font-family:var(--f-round);font-weight:500;font-size:.95rem;display:flex;justify-content:space-between}
-.track figcaption span{color:var(--moss)}
-.progress{margin:22px var(--pad) 0;height:3px;border-radius:3px;background:rgba(46,53,32,.14);overflow:hidden}
-.progress i{display:block;height:100%;width:30%;background:var(--coral);border-radius:3px;transform-origin:0 50%}
+/* ---------- La carte : une feuille de menu à onglets ---------- */
+.carte{background:var(--rose);color:var(--olive);padding:96px var(--pad) 90px}
+.carte .kicker{color:var(--coral-t)}
+.carte>.k2{margin-top:12px}
+.sheet{position:relative;margin-top:30px;background:var(--cream);border-radius:30px;padding:28px 22px 26px;box-shadow:0 30px 60px rgba(46,53,32,.14)}
+.sheet .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.sheet .hd h2{font-size:clamp(2.2rem,11vw,4.4rem)}
+.sheet .hd svg{flex:none;width:34px;height:64px}
+.sheet .sub{margin-top:8px;font-family:var(--f-round);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.88rem}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:22px -22px 0;padding:2px 22px 4px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;min-height:44px;padding:0 1.05em;border-radius:999px;border:1.5px solid var(--olive);font-family:var(--f-round);font-weight:600;font-size:.92rem;transition:background .35s,color .35s}
+.tabs button[aria-selected="true"]{background:var(--olive);color:var(--cream)}
+.panels{position:relative;margin-top:10px;touch-action:pan-y}
+.tp[hidden]{display:none}
+.tp .intro{margin-top:12px;color:var(--moss);font-size:.98rem}
+.item{display:grid;grid-template-columns:1fr auto;gap:2px 14px;padding:15px 0;border-bottom:1.5px dashed rgba(46,53,32,.22)}
+.item:last-child{border-bottom:0}
+.item b{font-family:var(--f-round);font-weight:600;font-size:1.06rem;text-transform:uppercase;letter-spacing:.02em}
+.item i{font-style:normal;font-family:var(--f-round);font-weight:600;color:var(--coral-t);font-size:1.04rem;white-space:nowrap}
+.item p{grid-column:1/-1;font-size:.94rem;color:#55593F}
+@keyframes itemIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.tp.enter .item,.tp.enter .intro{animation:itemIn .55s var(--ease) both;animation-delay:calc(var(--i,0) * 55ms)}
+.swipe{margin-top:14px;display:flex;justify-content:space-between;align-items:center;font-family:var(--f-round);font-weight:600;font-size:.85rem;color:var(--moss)}
+.swipe button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--olive);color:var(--olive);font-weight:700}
+.carte .note{margin-top:22px;font-size:.88rem;line-height:1.5;color:#55593F}
+.carte .cta{margin-top:22px}
 
 /* ---------- Groupes ---------- */
-.groupes{background:var(--coral);color:var(--ink);overflow:hidden}
-.groupes .h2{color:var(--ink)}
-.groupes .ph{margin-top:30px;aspect-ratio:5/4;border-radius:var(--r);overflow:hidden}
-.groupes .nums{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
-.groupes .nums div{background:rgba(31,36,22,.08);border-radius:20px;padding:18px}
-.groupes .nums b{display:block;font-family:var(--f-display);font-size:2.6rem;line-height:1}
-.groupes .nums span{font-family:var(--f-round);font-weight:500;font-size:.95rem}
-.groupes p.txt{margin-top:20px;font-size:1.05rem;max-width:40ch}
-.groupes .cta{margin-top:24px}
-
-/* ---------- Preuves ---------- */
-.proof{background:var(--rose);color:var(--olive)}
-.proof .row{display:grid;gap:14px}
-.stamp{display:flex;align-items:center;gap:18px;background:var(--cream);border-radius:var(--r);padding:20px}
-.stamp .c{flex:none;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:var(--olive);color:var(--cream);font-family:var(--f-display);font-size:1.5rem}
-.stamp .c.coral{background:var(--coral);color:var(--ink)}
-.stamp b{display:block;font-family:var(--f-round);font-weight:700;font-size:1.2rem;line-height:1.1}
-.stamp span{font-size:.95rem}
-.stars{color:var(--coral-t);letter-spacing:2px}
-.stamp .src{display:block;margin-top:2px;font-size:.8rem;color:var(--moss)}
+.grp{background:var(--coral);color:var(--ink);padding:96px var(--pad) 90px;overflow:hidden}
+.grp .ph{position:relative;aspect-ratio:4/5;border-radius:26px;overflow:hidden}
+.grp .ph .tag{position:absolute;left:16px;top:16px;font-family:var(--f-round);font-weight:600;font-size:.85rem;padding:.45em .9em;border-radius:999px;background:var(--cream);color:var(--olive)}
+.grp h2{margin-top:-0.55em;position:relative;z-index:2;font-size:clamp(2.6rem,13vw,6rem);color:var(--ink)}
+.grp .kicker{margin-top:28px}
+.grp .nums{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.grp .nums div{background:rgba(31,36,22,.08);border-radius:20px;padding:16px}
+.grp .nums b{display:block;font-family:var(--f-display);font-weight:400;font-size:2.4rem;line-height:1}
+.grp .nums span{font-family:var(--f-round);font-weight:500;font-size:.92rem}
+.grp ul{list-style:none;margin-top:20px}
+.grp li{padding:12px 0;border-top:1.5px solid rgba(31,36,22,.16);font-size:1.02rem}
+.grp .cta{margin-top:22px}
 
 /* ---------- Infos ---------- */
-.infos{background:var(--olive);color:var(--cream);overflow:hidden}
-.infos .h2 em{font-style:normal;color:var(--coral)}
-.infos dl{margin-top:34px;display:grid;gap:0}
-.infos dl>div{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:18px 0;border-top:1.5px solid rgba(247,240,230,.16)}
-.infos dt{font-family:var(--f-round);font-weight:600;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rose);padding-top:3px}
-.infos dd{font-size:1.06rem}
-.infos dd a{border-bottom:1.5px solid var(--coral);display:inline-block;padding:6px 0}
-.infos .cta{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px}
-.infos .wrap{padding-bottom:56px}
-.infos .badge{position:absolute;width:150px;aspect-ratio:1;right:-30px;top:60px;opacity:.95}
+.infos{background:var(--cream);color:var(--olive);padding:96px var(--pad) 90px;overflow:hidden}
+.infos .kicker{color:var(--coral-t)}
+.infos h2{margin-top:12px}
+.infos h2 em{font-style:normal;color:var(--coral-t)}
+.week{margin-top:30px;border-radius:24px;background:var(--olive);color:var(--cream);padding:8px 18px}
+.week li{list-style:none;display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1.5px solid rgba(247,240,230,.12);font-family:var(--f-round);font-weight:500;font-size:.98rem}
+.week li:last-child{border-bottom:0}
+.week li.off{color:rgba(247,240,230,.55)}
+.week li.today{color:var(--coral)}
+.week li.today .d::after{content:"Aujourd'hui";margin-left:8px;font-size:.72rem;padding:.2em .6em;border-radius:999px;background:var(--coral);color:var(--ink);vertical-align:2px}
+.infos dl{margin-top:22px}
+.infos dl>div{display:grid;grid-template-columns:100px 1fr;gap:12px;padding:16px 0;border-top:1.5px solid rgba(46,53,32,.14)}
+.infos dt{font-family:var(--f-round);font-weight:600;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-t);padding-top:3px}
+.infos dd{font-size:1.04rem}
+.infos dd a{display:inline-block;padding:6px 0;border-bottom:1.5px solid var(--coral)}
+.infos .cta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px}
+.infos .btn--line{color:var(--olive)}
 
-/* ---------- Footer ---------- */
 footer{position:relative;background:var(--olive);color:var(--cream);padding:0 var(--pad);overflow:hidden}
 footer .inner{border-top:1.5px solid rgba(247,240,230,.18);padding-top:26px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px}
 footer .kicker{color:var(--rose)}
@@ -304,30 +328,36 @@ footer .evin{margin-top:6px;font-size:.8rem;color:rgba(247,240,230,.75)}
 /* ---------- Desktop ---------- */
 @media (min-width:900px){
   .top .btn{padding:.7em 1.3em;font-size:.95rem}
-  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:end;padding-bottom:56px}
-  .hero .txt{align-self:center}
-  .hero .pic{height:72vh;margin-top:0}
-  .hero .meta{grid-column:1/-1;margin-top:0}
-  .hero .badge{width:150px;top:auto;bottom:-30px;left:-60px;right:auto}
   .wrap{padding:140px var(--pad)}
+  .hero h1{font-size:clamp(4rem,8.6vw,9rem);max-width:70vw}
+  .hero .badge{width:140px}
   .vit .k,.vit .words{left:8vw}
   .vit .words{font-size:clamp(4rem,8.4vw,8.2rem);max-width:60vw}
   .vit .sub{left:auto;right:8vw;width:min(34vw,440px);bottom:12vh}
   .vit .hint{bottom:40px}
-  .moment .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-  .moment .stage{margin-top:0}
-  .moment .ph{aspect-ratio:5/4}
-  .carte .inner{max-width:1100px;margin:0 auto}
-  .carte .cols{columns:2;column-gap:64px}
-  .cat{break-inside:avoid}
-  .chips{justify-content:center}
-  .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .card{position:relative;top:auto!important;margin:0;min-height:380px}
-  .track figure{width:30vw}
-  .groupes .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-  .groupes .ph{margin-top:0}
-  .proof .row{grid-template-columns:1fr 1fr}
-  .infos .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+  .svc .panel>.in{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr;column-gap:6vw;padding:120px 8vw 60px;align-content:center}
+  .svc .kicker{grid-column:1/-1}
+  .svc .hour{grid-column:1;grid-row:2;font-size:clamp(8rem,17vw,17rem)}
+  .svc .ph{grid-column:2;grid-row:2/4;margin-top:0;aspect-ratio:4/5;max-height:72vh;align-self:start}
+  .svc .body{grid-column:1;grid-row:3}
+  .sig .hd{padding:0 8vw}
+  .rail{padding:40px 8vw 14px}
+  .dish{width:24vw;max-width:none}
+  .sig .foot{margin:18px 8vw 0}
+  .amb{padding:140px 8vw}
+  .mos{grid-template-columns:repeat(4,1fr)}
+  .mos .col:nth-child(2){margin-top:90px}
+  .amb .proof{grid-template-columns:1fr 1fr;max-width:900px}
+  .carte{padding:140px 8vw}
+  .sheet{max-width:980px;margin-left:auto;margin-right:auto;padding:44px 52px}
+  .tp .list{columns:2;column-gap:56px}
+  .tp .item{break-inside:avoid}
+  .grp{padding:140px 8vw;display:grid;grid-template-columns:1fr 1fr;column-gap:6vw;align-items:center}
+  .grp .ph{grid-row:1/8}
+  .grp h2{margin-top:0}
+  .infos{padding:140px 8vw;display:grid;grid-template-columns:1fr 1fr;column-gap:6vw}
+  .infos .left{grid-column:1}
+  .infos .right{grid-column:2}
   .dock{display:none}
 }
 @media (prefers-reduced-motion:reduce){
@@ -335,8 +365,9 @@ footer .evin{margin-top:6px;font-size:.8rem;color:rgba(247,240,230,.75)}
 }
 </style>
 <noscript><style>#intro{display:none!important}body.locked{overflow:auto}[data-r],[data-clip]{opacity:1!important;transform:none!important;clip-path:none!important}
-.hero h1 .line>span{transform:none!important}.hero .kicker,.hero .meta,.hero .badge{opacity:1!important;transform:none!important}.hero .pic .frame{clip-path:none!important}
+.hero{height:auto}.hero .pin{position:relative}.hero .arch{clip-path:none!important}.hero .arch img{transform:none}.hero .shade{opacity:1}.hero h1 .line>span{transform:none!important}.hero .kicker,.hero .meta{opacity:1!important;transform:none!important}
 .vit{height:auto}.vit .pin{position:relative;height:auto;min-height:100svh}.vit .sub{opacity:1;transform:none}.vit .hint{display:none}
+.tp[hidden]{display:block}.tabs,.swipe{display:none}.tp{margin-top:22px}
 footer .big::after{content:"MAÏMO"}</style></noscript>
 </head>
 <body class="locked">
@@ -381,8 +412,9 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
 
 <nav class="nav" id="nav" aria-label="Navigation">
   <ol>
-    <li><a href="#manifeste">Maïmo</a></li>
     <li><a href="#moments">Midi &amp; soir</a></li>
+    <li><a href="#signatures">Incontournables</a></li>
+    <li><a href="#lieu">Le lieu</a></li>
     <li><a href="#carte">La carte</a></li>
     <li><a href="#groupes">Groupes</a></li>
     <li><a href="#infos">Infos</a></li>
@@ -391,25 +423,24 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
 </nav>
 
 <main>
-<!-- ============ Hero ============ -->
+<!-- ============ Hero : l'arche qui s'ouvre ============ -->
 <section class="hero grain" id="accueil">
-  <div class="txt">
-    <p class="kicker">Cantine méditerranéenne · Nantes</p>
-    <h1 class="display">
-      <span class="line"><span>Mezzés,</span></span>
-      <span class="line"><span>vins &amp;</span></span>
-      <span class="line"><span><em>soleil.</em></span></span>
-    </h1>
-  </div>
-  <div class="pic">
-    <div class="frame"><img src="img/table.webp" srcset="img/table-600.webp 600w, img/table.webp 888w" sizes="(min-width:900px) 45vw, 92vw" alt="Table de mezzés vue du dessus : pitas, houmous, falafels, halloumi, poulet croustillant" fetchpriority="high"></div>
-    <div class="badge" aria-hidden="true">
+  <div class="pin">
+    <div class="arch" id="arch"><img src="img/table.webp" srcset="img/table-600.webp 600w, img/table.webp 888w" sizes="100vw" alt="Table de mezzés vue du dessus : pitas, houmous, falafels, halloumi, poulet croustillant" fetchpriority="high"></div>
+    <div class="shade" id="hshade"></div>
+    <div class="badge" id="hbadge" aria-hidden="true">
       <div class="disc"></div>
       <svg class="ring" viewBox="0 0 200 200"><use href="#ring"/></svg>
       <svg class="m" viewBox="0 0 120 130"><use href="#m"/></svg>
     </div>
+    <p class="kicker"><span>Cantine méditerranéenne</span><span>Nantes</span></p>
+    <h1 class="display" id="htitle">
+      <span class="line"><span>Mezzés,</span></span>
+      <span class="line"><span>vins &amp;</span></span>
+      <span class="line"><span><em>soleil.</em></span></span>
+    </h1>
+    <div class="meta"><span><i class="dot"></i>Mardi → samedi, midi &amp; soir</span><span class="down" aria-hidden="true">↓</span></div>
   </div>
-  <div class="meta"><span><i class="dot"></i>Du mardi au samedi</span><span>34 rue Léon Jamin</span></div>
 </section>
 
 <!-- ============ La vitrine ============ -->
@@ -432,206 +463,170 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
 </section>
 
 <!-- ============ Midi / Soir ============ -->
-<section class="moment grain" id="moments">
-  <div class="wrap"><div class="grid">
-    <div>
-      <p class="kicker" data-r>Deux ambiances</p>
-      <h2 class="display h2" data-r>Midi cantine,<br>soir mezzés.</h2>
-      <div class="switch" id="switch" data-v="midi" role="group" aria-label="Choisir le moment">
-        <span class="knob"></span>
-        <button type="button" aria-pressed="true" data-v="midi">Le midi</button>
-        <button type="button" aria-pressed="false" data-v="soir">Le soir</button>
-      </div>
-    </div>
-    <div class="stage">
-      <div class="panel" data-p="midi">
-        <div class="ph"><img src="img/midi.webp" srcset="img/midi-600.webp 600w, img/midi.webp 888w" sizes="(min-width:900px) 45vw, 92vw" alt="Assiette du midi : galette, feta, légumes croquants" loading="lazy"><span class="when">12h → 14h</span></div>
-        <h3 class="display">La cantine</h3>
-        <p class="txt">Pitas et focaccias garnies, bowls et salades colorés. Halloumi grillé, légumes rôtis, poulet pané ou falafels — sur place ou à emporter.</p>
-        <div class="tags"><span>Pitas</span><span>Focaccias</span><span>Bowls</span><span>À emporter</span></div>
-      </div>
-      <div class="panel" data-p="soir" hidden>
-        <div class="ph"><img src="img/kefta.webp" srcset="img/kefta-600.webp 600w, img/kefta.webp 888w" sizes="(min-width:900px) 45vw, 92vw" alt="Keftas grillées sur labneh, verre de vin blanc" loading="lazy"><span class="when">Dès 19h</span></div>
-        <h3 class="display">Les mezzés</h3>
-        <p class="txt">Le soir, la carte se partage au centre de la table. Vins du sud, cocktails avec ou sans alcool, et une musique qui monte doucement avec la soirée.</p>
-        <div class="tags"><span>À partager</span><span>Vins du sud</span><span>Cocktails</span><span>Terrasse</span></div>
-      </div>
+<section class="svc" id="moments" aria-label="Le midi et le soir">
+  <div class="panel p1" id="p1"><div class="in">
+    <p class="kicker"><span>Le midi</span><span>Mar → sam</span></p>
+    <p class="hour display" aria-hidden="true">12H</p>
+    <div class="ph"><img src="img/midi.webp" srcset="img/midi-600.webp 600w, img/midi.webp 888w" sizes="(min-width:900px) 40vw, 90vw" alt="Assiette du midi : tatin d'oignons, feta, salade et pickles" loading="lazy"></div>
+    <div class="body">
+      <h3 class="display">La cantine.</h3>
+      <p class="txt">Pitas et focaccias garnies, bowls et salades colorés. Halloumi grillé, légumes rôtis, poulet pané ou falafels, sur place ou à emporter.</p>
+      <div class="tags"><span>12h → 14h</span><span>Pitas</span><span>Bowls</span><span>À emporter</span></div>
     </div>
   </div></div>
+  <div class="panel p2" id="p2"><div class="in">
+    <p class="kicker"><span>Le soir</span><span>Mar → sam</span></p>
+    <p class="hour display" aria-hidden="true">19H</p>
+    <div class="ph"><img src="img/kefta.webp" srcset="img/kefta-600.webp 600w, img/kefta.webp 888w" sizes="(min-width:900px) 40vw, 90vw" alt="Keftas grillées sur labneh et un verre de vin blanc" loading="lazy"></div>
+    <div class="body">
+      <h3 class="display">Les mezzés.</h3>
+      <p class="txt">La carte se partage au centre de la table. Vins du sud, cocktails avec ou sans alcool, et une musique qui monte doucement avec la soirée.</p>
+      <div class="tags"><span>Dès 19h</span><span>À partager</span><span>Vins du sud</span><span>Terrasse</span></div>
+      <a class="btn btn--coral go" href="#carte">Voir la carte du soir <span class="arr">→</span></a>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ Les incontournables ============ -->
+<section class="sig" id="signatures">
+  <div class="hd">
+    <div><p class="kicker" data-r>Les incontournables</p><h2 class="display h2" data-r>Ce qu'on<br>commande<br>en premier.</h2></div>
+      </div>
+  <div class="rail" id="rail">
+    <article class="dish"><img src="img/kefta.webp" srcset="img/kefta-600.webp 600w, img/kefta.webp 888w" sizes="(min-width:900px) 24vw, 76vw" alt="Kefta Maïmo : keftas grillées sur labneh" loading="lazy"><span class="n">Chaud devant</span>
+      <div class="tx"><h3 class="display">Kefta Maïmo</h3><p>Keftas grillées, labneh, mélasse de raisin, tahini.</p><span class="pr">11 €</span></div></article>
+    <article class="dish"><img src="img/labneh.webp" srcset="img/labneh-600.webp 600w, img/labneh.webp 888w" sizes="(min-width:900px) 24vw, 76vw" alt="Labneh, grenade et noix" loading="lazy"><span class="n">À la fraîche</span>
+      <div class="tx"><h3 class="display">Labneh Disco</h3><p>Labneh za'atar, crumble salé au sésame noir.</p><span class="pr">7 €</span></div></article>
+    <article class="dish"><img src="img/pita.webp" srcset="img/pita-600.webp 600w, img/pita.webp 888w" sizes="(min-width:900px) 24vw, 76vw" alt="Poulet croustillant, pita et bière" loading="lazy"><span class="n">Chaud devant</span>
+      <div class="tx"><h3 class="display">Crunchy Chicken</h3><p>Aiguillettes de poulet marinées et panées, sauce amba.</p><span class="pr">11 €</span></div></article>
+    <article class="dish"><img src="img/affogato.webp" srcset="img/affogato-600.webp 600w, img/affogato.webp 888w" sizes="(min-width:900px) 24vw, 76vw" alt="Affogato : espresso versé sur la glace à la fleur d'oranger" loading="lazy"><span class="n">Dessert</span>
+      <div class="tx"><h3 class="display">Affogato</h3><p>Glace yaourt à la fleur d'oranger noyée dans un espresso, biscuit choco-orange.</p><span class="pr">5 €</span></div></article>
+    <a class="dish more" href="#carte"><svg viewBox="0 0 120 130" aria-hidden="true"><use href="#m"/></svg>
+      <div><h3 class="display">Toute<br>la carte</h3><span>Chaud, frais, pains, desserts →</span></div></a>
+  </div>
+  <div class="foot" aria-hidden="true"><p class="count"><b id="sigN">01</b> / 05</p><div class="bar"><i id="sigBar"></i></div></div>
+</section>
+
+<!-- ============ Ambiance ============ -->
+<section class="amb grain" id="lieu">
+  <p class="kicker" data-r>Chez Maïmo</p>
+  <h2 class="display h2" data-r>Le soleil,<br>même quand<br><em>il pleut.</em></h2>
+  <div class="mos" id="mos">
+    <div class="col">
+      <figure><div class="ph"><img src="img/lampes.webp" srcset="img/lampes-600.webp 600w, img/lampes.webp 880w" sizes="(min-width:900px) 22vw, 46vw" alt="Suspensions rose corail, globe et vitrine sur la rue" loading="lazy"></div><figcaption>La salle, côté vitrine</figcaption></figure>
+      <figure><div class="ph"><img src="img/sante.webp" srcset="img/sante-600.webp 600w, img/sante.webp 880w" sizes="(min-width:900px) 22vw, 46vw" alt="Trois verres qui trinquent en terrasse" loading="lazy"></div><figcaption>Santé !</figcaption></figure>
+    </div>
+    <div class="col">
+      <figure><div class="ph"><img src="img/vue.webp" srcset="img/vue-600.webp 600w, img/vue.webp 880w" sizes="(min-width:900px) 22vw, 46vw" alt="Bowl de falafels et salade face à la terrasse, rue Léon Jamin" loading="lazy"></div><figcaption>Vue sur la rue Léon Jamin</figcaption></figure>
+      <figure><div class="ph"><img src="img/labneh.webp" srcset="img/labneh-600.webp 600w, img/labneh.webp 888w" sizes="(min-width:900px) 22vw, 46vw" alt="Labneh, grenade et noix torréfiées" loading="lazy"></div><figcaption>Labneh &amp; grenade</figcaption></figure>
+    </div>
+  </div>
+  <div class="proof">
+    <div class="stamp" data-r><span class="c">4,7</span><div><b>Sur Google</b><span>85 avis au 18/11/2026</span><small>Avis Google, non vérifiés par Maïmo</small></div></div>
+    <div class="stamp" data-r><span class="c alt">G&amp;M</span><div><b>Sélection Gault&amp;Millau 2026</b><span>Méditerranéen · Tapas</span></div></div>
+  </div>
+  <a class="btn btn--line cta" href="https://www.instagram.com/maimo.nantes/" target="_blank" rel="noopener">Nous suivre sur Instagram <span class="arr">→</span></a>
 </section>
 
 <!-- ============ Carte ============ -->
 <section class="carte" id="carte">
-  <div class="wrap"><div class="inner">
-    <div class="head">
-      <div>
-        <h2 class="display h2" data-r>Menu<br>du soir</h2>
-        <p class="sub" data-r>Mezzés à partager</p>
-      </div>
-      <svg data-r viewBox="0 0 34 64" aria-hidden="true"><use href="#glass"/></svg>
+  <p class="kicker" data-r>La carte</p>
+  <div class="sheet" data-r>
+    <div class="hd">
+      <div><h2 class="display">Menu<br>du soir</h2><p class="sub">Mezzés à partager</p></div>
+      <svg viewBox="0 0 34 64" aria-hidden="true"><use href="#glass"/></svg>
     </div>
-
-    <nav class="chips" id="chips" aria-label="Catégories de la carte">
-      <a href="#c-chaud" class="on">Chaud devant</a>
-      <a href="#c-frais">À la fraîche</a>
-      <a href="#c-sides">Sides</a>
-      <a href="#c-pains">Les pains</a>
-      <a href="#c-desserts">Desserts</a>
-      <a href="#c-boire">À boire</a>
-    </nav>
-
-    <div class="cols">
-      <div class="cat" id="c-chaud" data-r>
-        <h3>Chaud devant</h3>
-        <p class="line-intro">Sort du grill ou de la friteuse. Brut, crousti, sexy.</p>
+    <div class="tabs" role="tablist" aria-label="Catégories de la carte" id="tabs">
+      <button role="tab" id="t-chaud" aria-controls="c-chaud" aria-selected="true">Chaud devant</button>
+      <button role="tab" id="t-frais" aria-controls="c-frais" aria-selected="false" tabindex="-1">À la fraîche</button>
+      <button role="tab" id="t-sides" aria-controls="c-sides" aria-selected="false" tabindex="-1">Sides</button>
+      <button role="tab" id="t-pains" aria-controls="c-pains" aria-selected="false" tabindex="-1">Les pains</button>
+      <button role="tab" id="t-desserts" aria-controls="c-desserts" aria-selected="false" tabindex="-1">Desserts</button>
+      <button role="tab" id="t-boire" aria-controls="c-boire" aria-selected="false" tabindex="-1">À boire</button>
+    </div>
+    <div class="panels" id="panels">
+      <div class="tp" role="tabpanel" id="c-chaud" aria-labelledby="t-chaud"><p class="intro">Sort du grill ou de la friteuse. Brut, crousti, sexy.</p><div class="list">
         <div class="item"><b>Halloumi Bang Bang</b><i>7,5 €</i><p>Halloumi frit au za'atar et miel</p></div>
         <div class="item"><b>Ail Ail Ail Falaf'</b><i>7 €</i><p>Falafels, sauce garlic</p></div>
         <div class="item"><b>Kefta Maïmo</b><i>11 €</i><p>Keftas grillées, labneh, mélasse de raisin, tahini</p></div>
         <div class="item"><b>Crunchy Chicken</b><i>11 €</i><p>Aiguillettes de poulet marinées et panées, sauce amba</p></div>
-        <div class="item"><b>Halloumi Sunset</b><i>8 €</i><p>Halloumi grillé, raisins, miel, herbes fraîches, tahini</p></div>
-      </div>
-      <div class="cat" id="c-frais" data-r>
-        <h3>À la fraîche</h3>
-        <p class="line-intro">Le kiff à froid.</p>
+        <div class="item"><b>Halloumi Sunset</b><i>8 €</i><p>Halloumi grillé, raisins, miel, herbes fraîches, tahini</p></div></div></div>
+      <div class="tp" role="tabpanel" id="c-frais" aria-labelledby="t-frais" hidden><p class="intro">Le kiff à froid.</p><div class="list">
         <div class="item"><b>Surprise Houmous</b><i>6 €</i><p>Houmous de pois chiche et ingrédients du moment !</p></div>
         <div class="item"><b>Labneh Disco</b><i>7 €</i><p>Labneh za'atar, crumble salé sésame noir</p></div>
         <div class="item"><b>Dolmas Pop</b><i>5 €</i><p>Feuille de vigne, riz, crousti sarrasin, agrumes</p></div>
-        <div class="item"><b>Green Dip</b><i>6 €</i><p>Tartinade feta, estragon, basilic, menthe et pignons torréfiés</p></div>
-      </div>
-      <div class="cat" id="c-sides" data-r>
-        <h3>Sides</h3>
+        <div class="item"><b>Green Dip</b><i>6 €</i><p>Tartinade feta, estragon, basilic, menthe et pignons torréfiés</p></div></div></div>
+      <div class="tp" role="tabpanel" id="c-sides" aria-labelledby="t-sides" hidden><p class="intro">Pour accompagner le reste.</p><div class="list">
         <div class="item"><b>Patates douces rôties</b><i>4,5 €</i><p>Sauce yaourt citron persil et za'atar</p></div>
         <div class="item"><b>Potatoes pimentées</b><i>4 €</i><p>Sauce yaourt citron persil et za'atar</p></div>
         <div class="item"><b>Chips de légumes</b><i>4 €</i><p>Panées au paprika fumé</p></div>
         <div class="item"><b>Olives de Kalamata</b><i>2 €</i></div>
-        <div class="item"><b>Chips de pita</b><i>3 €</i></div>
-      </div>
-      <div class="cat" id="c-pains" data-r>
-        <h3>Les pains</h3>
-        <p class="line-intro">À tremper, à couper, à saucer…</p>
+        <div class="item"><b>Chips de pita</b><i>3 €</i></div></div></div>
+      <div class="tp" role="tabpanel" id="c-pains" aria-labelledby="t-pains" hidden><p class="intro">À tremper, à couper, à saucer…</p><div class="list">
         <div class="item"><b>Pain pita</b><i>2 €</i></div>
         <div class="item"><b>Garlic pita</b><i>3 €</i></div>
-        <div class="item"><b>Cheesy pita</b><i>3,5 €</i></div>
-      </div>
-      <div class="cat" id="c-desserts" data-r>
-        <h3>Desserts</h3>
+        <div class="item"><b>Cheesy pita</b><i>3,5 €</i></div></div></div>
+      <div class="tp" role="tabpanel" id="c-desserts" aria-labelledby="t-desserts" hidden><p class="intro">Gardez de la place.</p><div class="list">
         <div class="item"><b>Affogato à la fleur d'oranger</b><i>5 €</i><p>Glace yaourt fleur d'oranger noyée dans un espresso, biscuit choco orange</p></div>
         <div class="item"><b>Sugar Souk</b><i>7 € · 13,5 €</i><p>À composer, solo ou à partager. Crémeux de pistache et ses toppings : cerises amarena, chantilly, meringue concassée, croustillants de pita</p></div>
-        <div class="item"><b>Cookie</b><i>5,5 €</i><p>Beurre de cacahuètes, chocolat, tahini, et sa boule de glace</p></div>
-      </div>
-      <div class="cat" id="c-boire" data-r>
-        <h3>À boire</h3>
-        <p class="line-intro">L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
+        <div class="item"><b>Cookie</b><i>5,5 €</i><p>Beurre de cacahuètes, chocolat, tahini, et sa boule de glace</p></div></div></div>
+      <div class="tp" role="tabpanel" id="c-boire" aria-labelledby="t-boire" hidden><p class="intro">L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p><div class="list">
         <div class="item"><b>Verre de vin</b><i>6 €</i><p>Une sélection de vins ensoleillés</p></div>
         <div class="item"><b>Sauvage blonde 33 cl</b><i>6 €</i></div>
         <div class="item"><b>Sauvage IPA 33 cl</b><i>6,5 €</i></div>
         <div class="item"><b>Bière du moment</b><i>7 €</i></div>
-        <div class="item"><b>Cocktails</b><i>avec ou sans</i><p>Frais, à accorder avec les épices douces de la cuisine</p></div>
-      </div>
+        <div class="item"><b>Cocktails</b><i>avec ou sans</i><p>Frais, à accorder avec les épices douces de la cuisine</p></div></div></div>
     </div>
-    <p class="note">Prix nets en euros, TTC, service compris. La carte bouge avec les saisons et le marché.<br>Allergènes et origine des viandes : demandez à l'équipe, elle vous renseigne.</p>
-    <div class="cta"><a class="btn btn--coral" href="https://widget.privateaser.com/v/ad64e9dd-56777" target="_blank" rel="noopener">Réserver une table <span class="arr">→</span></a></div>
-  </div></div>
-</section>
-
-<!-- ============ Rituel ============ -->
-<section class="rituel grain">
-  <div class="wrap">
-    <p class="kicker" data-r style="color:var(--rose)">Le mode d'emploi</p>
-    <h2 class="display h2" data-r>Ici, on<br><em>partage.</em></h2>
-    <div class="stack">
-      <article class="card">
-        <span class="n">01</span>
-        <div class="thumb"><img src="img/table.webp" srcset="img/table-600.webp 600w, img/table.webp 888w" sizes="100px" alt="" loading="lazy"></div>
-        <h3>On commande à plusieurs</h3>
-        <p>Trois ou quatre mezzés pour deux, un peu de chaud, un peu de frais.</p>
-      </article>
-      <article class="card">
-        <span class="n">02</span>
-        <div class="thumb"><img src="img/pita.webp" srcset="img/pita-600.webp 600w, img/pita.webp 888w" sizes="100px" alt="" loading="lazy"></div>
-        <h3>On trempe, on goûte</h3>
-        <p>Pas d'entrée, pas de plat : la pita passe de main en main et trempe dans tout.</p>
-      </article>
-      <article class="card">
-        <span class="n">03</span>
-        <div class="thumb"><img src="img/affogato.webp" srcset="img/affogato-600.webp 600w, img/affogato.webp 888w" sizes="100px" alt="" loading="lazy"></div>
-        <h3>On finit en douceur</h3>
-        <p>Un affogato à la fleur d'oranger, un Sugar Souk à partager. Et un dernier verre.</p>
-      </article>
-    </div>
+    <div class="swipe" aria-hidden="true"><button type="button" id="tPrev" tabindex="-1">←</button><span id="tPos">1 / 6 · glissez pour changer</span><button type="button" id="tNext" tabindex="-1">→</button></div>
   </div>
-</section>
-
-<!-- ============ Galerie ============ -->
-<section class="gal" aria-label="Photos">
-  <div class="hd">
-    <h2 class="display h2" data-r>Chez<br>Maïmo</h2>
-    <a href="https://www.instagram.com/maimo.nantes/" target="_blank" rel="noopener" data-r>@maimo.nantes</a>
-  </div>
-  <div class="track" id="track">
-    <figure><div class="ph"><img src="img/pita.webp" srcset="img/pita-600.webp 600w, img/pita.webp 888w" sizes="(min-width:900px) 30vw, 72vw" alt="Pita, bière et poulet croustillant sur une table en bois" loading="lazy"></div><figcaption>Pita & bière <span>01</span></figcaption></figure>
-    <figure><div class="ph"><img src="img/apero.webp" srcset="img/apero-600.webp 600w, img/apero.webp 888w" sizes="(min-width:900px) 30vw, 72vw" alt="Un verre de vin à la lumière de la lampe" loading="lazy"></div><figcaption>L'heure du verre <span>02</span></figcaption></figure>
-    <figure><div class="ph"><img src="img/labneh.webp" srcset="img/labneh-600.webp 600w, img/labneh.webp 888w" sizes="(min-width:900px) 30vw, 72vw" alt="Labneh, grenade et noix torréfiées" loading="lazy"></div><figcaption>Labneh & grenade <span>03</span></figcaption></figure>
-    <figure><div class="ph"><img src="img/terrasse.webp" srcset="img/terrasse-600.webp 600w, img/terrasse.webp 888w" sizes="(min-width:900px) 30vw, 72vw" alt="Amis en terrasse rue Léon Jamin" loading="lazy"></div><figcaption>La terrasse <span>04</span></figcaption></figure>
-    <figure><div class="ph"><img src="img/bowl.webp" srcset="img/bowl-600.webp 600w, img/bowl.webp 888w" sizes="(min-width:900px) 30vw, 72vw" alt="Bowl du midi, falafels et légumes" loading="lazy"></div><figcaption>Bowl du midi <span>05</span></figcaption></figure>
-    <figure><div class="ph"><img src="img/affogato.webp" srcset="img/affogato-600.webp 600w, img/affogato.webp 888w" sizes="(min-width:900px) 30vw, 72vw" alt="Affogato : espresso versé sur la glace fleur d'oranger" loading="lazy"></div><figcaption>Affogato <span>06</span></figcaption></figure>
-  </div>
-  <div class="progress"><i id="prog"></i></div>
+  <p class="note">Prix nets en euros, TTC, service compris. La carte bouge avec les saisons et le marché.<br>Allergènes et origine des viandes : demandez à l'équipe, elle vous renseigne.</p>
+  <a class="btn btn--coral cta" href="https://widget.privateaser.com/v/ad64e9dd-56777" target="_blank" rel="noopener">Réserver une table <span class="arr">→</span></a>
 </section>
 
 <!-- ============ Groupes ============ -->
-<section class="groupes grain" id="groupes">
-  <div class="wrap"><div class="grid">
-    <div>
-      <p class="kicker" data-r>Anniversaires, afterworks, équipes</p>
-      <h2 class="display h2" data-r>Venez<br>en bande.</h2>
-      <div class="nums" data-r>
-        <div><b>22</b><span>personnes max. à table</span></div>
-        <div><b>15+</b><span>pour privatiser le lieu</span></div>
-      </div>
-      <p class="txt" data-r>Mezzés au centre, cocktails dînatoires sur demande, gâteau d'anniversaire possible et votre propre playlist quand c'est privatisé.</p>
-      <div class="cta" data-r><a class="btn btn--cream" href="https://www.privateaser.com/lieu/56777-maimo-nantes" target="_blank" rel="noopener">Réservation de groupe <span class="arr">→</span></a></div>
-    </div>
-    <div class="ph" data-clip><img src="img/terrasse.webp" srcset="img/terrasse-600.webp 600w, img/terrasse.webp 888w" sizes="(min-width:900px) 45vw, 92vw" alt="Groupe d'amis autour d'une table chez Maïmo" loading="lazy"></div>
-  </div></div>
-</section>
-
-<!-- ============ Preuves ============ -->
-<section class="proof">
-  <div class="wrap" style="padding-top:64px;padding-bottom:64px">
-    <div class="row">
-      <div class="stamp" data-r><span class="c">4,7</span><div><b>Sur Google</b><span class="stars" aria-hidden="true">★★★★★</span> <span>85 avis au 18/11/2026</span><small class="src">Avis Google, non vérifiés par Maïmo</small></div></div>
-      <div class="stamp" data-r><span class="c coral" style="font-size:1.05rem">G&amp;M</span><div><b>Sélection Gault&amp;Millau 2026</b><span>Méditerranéen · Tapas</span></div></div>
-    </div>
+<section class="grp" id="groupes">
+  <div class="ph" data-clip><img src="img/sante.webp" srcset="img/sante-600.webp 600w, img/sante.webp 880w" sizes="(min-width:900px) 40vw, 90vw" alt="Verres qui trinquent en terrasse" loading="lazy"><span class="tag">Anniversaires · afterworks · équipes</span></div>
+  <h2 class="display" data-r>Venez<br>en bande.</h2>
+  <p class="kicker" data-r>Groupes &amp; privatisation</p>
+  <div class="nums" data-r>
+    <div><b>22</b><span>personnes max. à table</span></div>
+    <div><b>15+</b><span>pour privatiser le lieu</span></div>
   </div>
+  <ul data-r>
+    <li>Mezzés au centre, cocktails dînatoires sur demande</li>
+    <li>Gâteau d'anniversaire possible</li>
+    <li>Votre playlist quand le lieu est privatisé</li>
+  </ul>
+  <a class="btn btn--cream cta" href="https://www.privateaser.com/lieu/56777-maimo-nantes" target="_blank" rel="noopener" data-r>Réservation de groupe <span class="arr">→</span></a>
 </section>
 
 <!-- ============ Infos ============ -->
-<section class="infos grain" id="infos">
-  <div class="badge alt" aria-hidden="true">
-    <div class="disc"></div>
-    <svg class="ring" viewBox="0 0 200 200"><use href="#ring"/></svg>
-    <svg class="m" viewBox="0 0 120 130"><use href="#m"/></svg>
+<section class="infos" id="infos">
+  <div class="left">
+    <p class="kicker" data-r>Passer nous voir</p>
+    <h2 class="display h2" data-r>34 rue<br>Léon<br><em>Jamin.</em></h2>
+    <ul class="week" id="week" data-r aria-label="Horaires">
+      <li data-d="2"><span class="d">Mardi</span><span>12h–14h · dès 19h</span></li>
+      <li data-d="3"><span class="d">Mercredi</span><span>12h–14h · dès 19h</span></li>
+      <li data-d="4"><span class="d">Jeudi</span><span>12h–14h · dès 19h</span></li>
+      <li data-d="5"><span class="d">Vendredi</span><span>12h–14h · dès 19h</span></li>
+      <li data-d="6"><span class="d">Samedi</span><span>12h–14h · dès 19h</span></li>
+      <li data-d="0" class="off"><span class="d">Dimanche</span><span>Fermé</span></li>
+      <li data-d="1" class="off"><span class="d">Lundi</span><span>Fermé</span></li>
+    </ul>
   </div>
-  <div class="wrap"><div class="grid">
-    <div>
-      <p class="kicker" data-r style="color:var(--rose)">Passer nous voir</p>
-      <h2 class="display h2" data-r>34 rue<br>Léon<br><em>Jamin.</em></h2>
+  <div class="right">
+    <dl>
+      <div data-r><dt>Adresse</dt><dd>34 rue Léon Jamin<br>44000 Nantes</dd></div>
+      <div data-r><dt>Tram</dt><dd>L3 Jean Jaurès · L2 50 Otages</dd></div>
+      <div data-r><dt>Téléphone</dt><dd><a href="tel:+33974640504">09 74 64 05 04</a></dd></div>
+      <div data-r><dt>Instagram</dt><dd><a href="https://www.instagram.com/maimo.nantes/" target="_blank" rel="noopener">@maimo.nantes</a></dd></div>
+    </dl>
+    <div class="cta" data-r>
+      <a class="btn btn--coral" href="https://widget.privateaser.com/v/ad64e9dd-56777" target="_blank" rel="noopener">Réserver <span class="arr">→</span></a>
+      <a class="btn btn--line" href="https://www.google.com/maps/search/?api=1&amp;query=Ma%C3%AFmo+34+rue+L%C3%A9on+Jamin+Nantes" target="_blank" rel="noopener">Itinéraire</a>
     </div>
-    <div>
-      <dl>
-        <div data-r><dt>Adresse</dt><dd>34 rue Léon Jamin<br>44000 Nantes</dd></div>
-        <div data-r><dt>Tram</dt><dd>L3 Jean Jaurès · L2 50 Otages</dd></div>
-        <div data-r><dt>Horaires</dt><dd>Mardi → samedi<br>Midi 12h – 14h · Soir dès 19h<br>Dimanche &amp; lundi : fermé</dd></div>
-        <div data-r><dt>Téléphone</dt><dd><a href="tel:+33974640504">09 74 64 05 04</a></dd></div>
-        <div data-r><dt>Instagram</dt><dd><a href="https://www.instagram.com/maimo.nantes/" target="_blank" rel="noopener">@maimo.nantes</a></dd></div>
-      </dl>
-      <div class="cta" data-r>
-        <a class="btn btn--coral" href="https://widget.privateaser.com/v/ad64e9dd-56777" target="_blank" rel="noopener">Réserver <span class="arr">→</span></a>
-        <a class="btn btn--line" href="https://www.google.com/maps/search/?api=1&query=Ma%C3%AFmo+34+rue+L%C3%A9on+Jamin+Nantes" target="_blank" rel="noopener">Itinéraire</a>
-      </div>
-    </div>
-  </div></div>
+  </div>
 </section>
 </main>
 

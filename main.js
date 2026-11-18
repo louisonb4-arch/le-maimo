@@ -4,22 +4,31 @@
   const body = document.body;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = v => Math.min(1, Math.max(0, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   const back = k => { const c1 = 2.2, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
   const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  let ticking = false;
+  const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
 
   /* ---- Intro : persiennes ---- */
   const intro = $('#intro');
   $$('.slat', intro).forEach((s, i) => s.style.transitionDelay = (i * 0.055) + 's');
-  let done = false;
+  let done = false, revealStart = 0;
   const openIntro = () => {
     if (done) return; done = true;
     intro.classList.add('open');
-    setTimeout(() => body.classList.add('ready'), reduce ? 0 : 350);
+    setTimeout(() => {
+      body.classList.add('ready');
+      revealStart = performance.now();
+      const loop = () => { request(); if (performance.now() - revealStart < 1500) requestAnimationFrame(loop); };
+      loop();
+    }, reduce ? 0 : 350);
     setTimeout(() => { intro.classList.add('gone'); if (!body.classList.contains('menu-open')) body.classList.remove('locked'); }, reduce ? 0 : 1500);
   };
   fontsReady.then(() => setTimeout(openIntro, reduce ? 0 : 2100));
-  setTimeout(openIntro, 4500);                 // filet de sécurité
-  intro.addEventListener('click', openIntro);  // tap pour passer
+  setTimeout(openIntro, 4500);
+  intro.addEventListener('click', openIntro);
 
   /* ---- Menu ---- */
   const burger = $('#burger'), nav = $('#nav');
@@ -40,15 +49,18 @@
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }), { rootMargin: '0px 0px -12% 0px' });
   $$('[data-r],[data-clip]').forEach(el => io.observe(el));
+  const pio = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('in-view', e.isIntersecting)), { threshold: .25 });
+  $$('.svc .panel').forEach(p => pio.observe(p));
 
-  /* ---- Éléments pilotés par le scroll ---- */
-  const top = $('#top'), dock = $('#dock'), hero = $('#accueil'), hImg = $('.hero .pic img');
+  /* ---- Références pour le scroll ---- */
+  const top = $('#top'), dock = $('#dock');
+  const hero = $('#accueil'), arch = $('#arch'), archImg = $('img', arch), hshade = $('#hshade'), hbadge = $('#hbadge'), htitle = $('#htitle');
   const vit = $('#manifeste'), lns = $$('.ln', vit), vbg = $('.bg', vit), vbg2 = $('.bg2', vit), veil = $('.veil', vit), glass = $('.glass', vit);
   const pita = $('.pita', vit), vsub = $('.sub', vit), vhint = $('.hint', vit);
-  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  const cards = $$('.card');
+  const p1in = $('#p1 .in'), p2 = $('#p2');
+  const cols = $$('#mos .col');
   const bw = $('#bigword'), foo = $('#foot');
-  let chs = [], layout = '', lastY = 0, ticking = false;
+  let chs = [], layout = '', lastY = 0;
 
   // Footer : le mot remplit pile la largeur (2 lignes sur mobile)
   const build = () => {
@@ -67,29 +79,42 @@
 
   function frame() {
     ticking = false;
-    // 1) lectures
-    const y = scrollY, vh = innerHeight, vw = innerWidth, h = hero.offsetHeight;
-    const vr = vit.getBoundingClientRect();
-    const fr = foo.getBoundingClientRect();
-    const mobile = vw < 900;
-    const cardTops = mobile ? cards.map(c => c.getBoundingClientRect().top) : null;
-    const cardH = mobile && cards[0] ? cards[0].offsetHeight : 1;
+    const y = scrollY, vh = innerHeight, vw = innerWidth, mobile = vw < 900;
+    const hr = hero.getBoundingClientRect(), vr = vit.getBoundingClientRect(), fr = foo.getBoundingClientRect();
+    const tr = htitle.getBoundingClientRect();
+    const p2top = p2.getBoundingClientRect().top;
+    const colRects = cols.map(c => c.parentElement.getBoundingClientRect());
 
-    // 2) écritures
-    top.classList.toggle('solid', y > 40);
-    if (y > h && y > lastY + 4 && !body.classList.contains('menu-open')) top.classList.add('hide');
+    // En-tête et barre de réservation
+    const heroEnd = hero.offsetHeight - vh;
+    top.classList.toggle('solid', y > heroEnd - 10);
+    if (y > heroEnd && y > lastY + 4 && !body.classList.contains('menu-open')) top.classList.add('hide');
     if (y < lastY - 4) top.classList.remove('hide');
-    dock.classList.toggle('show', y > h * .7 && fr.top > vh * .85);
+    dock.classList.toggle('show', y > heroEnd * .9 && fr.top > vh * .85);
     lastY = y;
 
-    if (body.classList.contains('ready')) {
-      hImg.style.transition = 'none';
-      hImg.style.transform = `scale(1.04) translateY(${Math.min(y, vh) * .08}px)`;
+    // Hero : l'arche monte à l'ouverture, puis s'ouvre en plein écran au scroll
+    if (hr.bottom > 0) {
+      const r = body.classList.contains('ready') ? (reduce ? 1 : ease(clamp((performance.now() - revealStart) / 1300))) : 0;
+      const p = reduce ? 0 : clamp(-hr.top / Math.max(1, hr.height - vh));
+      const t = ease(clamp(p / .85));
+      const x0 = mobile ? vw * .07 : vw * .3;
+      const t0 = (mobile ? 128 : 120);
+      const b0 = Math.max(80, vh - (tr.top + (tr.height / 3) * .55) + (hr.top < 0 ? 0 : 0));
+      const top0 = lerp(vh - b0, t0, r);
+      const inTop = lerp(top0, 0, t), inX = lerp(x0, 0, t), inB = lerp(b0, 0, t);
+      const rad = lerp((vw - 2 * x0) / 2, 0, t);
+      arch.style.clipPath = `inset(${inTop}px ${inX}px ${inB}px ${inX}px round ${rad}px ${rad}px 0 0)`;
+      archImg.style.transform = `scale(${lerp(1.18, 1, Math.max(t, r * .4))})`;
+      hshade.style.opacity = t;
+      const bs = hbadge.offsetWidth;
+      hbadge.style.transform = `translate(${vw - x0 - bs * .78}px, ${top0 + (vw - 2 * x0) * .12}px) rotate(${p * 120}deg)`;
+      hbadge.style.opacity = r * (1 - clamp(t * 3));
     }
 
-    // La vitrine : les lignes pivotent comme vues de l'autre côté de la vitre
-    const p = reduce ? 1 : clamp(-vr.top / (vr.height - vh));
+    // La vitrine
     if (vr.bottom > -50 && vr.top < vh + 50) {
+      const p = reduce ? 1 : clamp(-vr.top / (vr.height - vh));
       lns.forEach((l, i) => {
         const k = ease(clamp((p - .08 - i * .07) / .3));
         l.style.transform = `rotateY(${180 * (1 - k)}deg)`;
@@ -105,13 +130,19 @@
       vhint.style.opacity = p > .05 ? 0 : 1;
     }
 
-    // Cartes empilées (mobile)
-    if (mobile) cards.forEach((c, i) => {
-      if (i === cards.length - 1) return;
-      const k = clamp(1 - (cardTops[i + 1] - cardTops[i]) / cardH);
-      c.style.transform = `scale(${1 - k * .06})`;
-      c.style.filter = `brightness(${1 - k * .15})`;
-    });
+    // Midi / soir : le panneau du midi recule quand le soir arrive
+    if (!reduce) {
+      const k = clamp(1 - p2top / vh);
+      p1in.style.transform = `scale(${1 - k * .08})`;
+      p1in.style.filter = `brightness(${1 - k * .35})`;
+    }
+
+    // Ambiance : la deuxième colonne glisse plus vite
+    if (!reduce && colRects[1] && colRects[1].bottom > 0 && colRects[1].top < vh) {
+      const c = (colRects[1].top + colRects[1].height / 2 - vh / 2) / vh;
+      cols[1].style.transform = `translateY(${c * (mobile ? 70 : 110)}px)`;
+      cols[0].style.transform = `translateY(${c * -20}px)`;
+    }
 
     // Footer : lettres qui jaillissent
     const fp = reduce ? 1 : clamp((vh - fr.top) / Math.min(fr.height, vh));
@@ -121,44 +152,80 @@
       c.style.opacity = k > 0 ? 1 : 0;
     });
   }
-  const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
   addEventListener('scroll', request, { passive: true });
-  addEventListener('resize', () => { fit(); request(); });
+  // Panneaux midi/soir plus hauts que l'écran : ils collent seulement une fois leur bas atteint
+  const stick = () => $$('.svc .panel').forEach(p => { p.style.top = Math.min(0, innerHeight - p.offsetHeight) + 'px'; });
+  addEventListener('resize', () => { fit(); stick(); request(); rail(); });
+  stick(); fontsReady.then(stick);
   fit();
   fontsReady.then(() => { fit(); request(); });
 
-  /* ---- Midi / Soir ---- */
-  const sw = $('#switch');
-  $$('button', sw).forEach(b => b.addEventListener('click', () => {
-    const v = b.dataset.v;
-    sw.dataset.v = v;
-    $$('button', sw).forEach(x => x.setAttribute('aria-pressed', x === b));
-    $$('.panel').forEach(p => p.hidden = p.dataset.p !== v);
-  }));
-
-  /* ---- Carte : catégorie active ---- */
-  const chips = $$('#chips a');
-  const cio = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return;
-    chips.forEach(c => {
-      const on = c.getAttribute('href') === '#' + e.target.id;
-      c.classList.toggle('on', on);
-      if (on) c.parentElement.scrollTo({ left: c.offsetLeft - (c.parentElement.clientWidth - c.offsetWidth) / 2, behavior: 'smooth' });
+  /* ---- Incontournables : rail de cartes ---- */
+  const rl = $('#rail'), dishes = $$('.dish', rl), sigN = $('#sigN'), sigBar = $('#sigBar');
+  let rt = false;
+  function rail() {
+    rt = false;
+    const rc = rl.getBoundingClientRect(), mid = rc.left + rc.width / 2;
+    let best = 0, bd = 1e9;
+    dishes.forEach((d, i) => {
+      const r = d.getBoundingClientRect(), dist = (r.left + r.width / 2 - mid) / r.width;
+      if (Math.abs(dist) < bd) { bd = Math.abs(dist); best = i; }
+      if (reduce) return;
+      d.style.transform = `scale(${1 - Math.min(Math.abs(dist), 1) * .07})`;
+      const img = $('img', d); if (img) img.style.transform = `translateX(${-dist * 7}%)`;
     });
-  }), { rootMargin: '-35% 0px -60% 0px' });
-  $$('.cat').forEach(c => cio.observe(c));
+    sigN.textContent = String(best + 1).padStart(2, '0');
+    const max = rl.scrollWidth - rl.clientWidth;
+    sigBar.style.width = (20 + (max > 0 ? rl.scrollLeft / max : 0) * 80) + '%';
+  }
+  rl.addEventListener('scroll', () => { if (!rt) { rt = true; requestAnimationFrame(rail); } }, { passive: true });
+  rail();
+  let down = false, sx = 0, sl = 0, moved = false;
+  rl.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; moved = false; sx = e.clientX; sl = rl.scrollLeft; rl.style.scrollSnapType = 'none'; });
+  addEventListener('pointerup', () => { if (!down) return; down = false; rl.style.scrollSnapType = ''; });
+  addEventListener('pointermove', e => { if (!down) return; if (Math.abs(e.clientX - sx) > 5) moved = true; rl.scrollLeft = sl - (e.clientX - sx); });
+  rl.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; } }, true);
 
-  /* ---- Galerie : progression + glisser à la souris ---- */
-  const track = $('#track'), prog = $('#prog');
-  const upd = () => {
-    const max = track.scrollWidth - track.clientWidth;
-    prog.style.width = (25 + (max > 0 ? track.scrollLeft / max : 0) * 75) + '%';
+  /* ---- Carte : onglets + glisser ---- */
+  const tabs = $$('#tabs [role=tab]'), tps = $$('#panels .tp'), tPos = $('#tPos');
+  let cur = 0;
+  const show = (i, focus) => {
+    i = (i + tabs.length) % tabs.length; cur = i;
+    tabs.forEach((t, k) => { t.setAttribute('aria-selected', k === i); t.tabIndex = k === i ? 0 : -1; });
+    tps.forEach((p, k) => {
+      p.hidden = k !== i;
+      if (k === i) {
+        $$('.intro,.item', p).forEach((el, n) => el.style.setProperty('--i', n));
+        p.classList.remove('enter'); void p.offsetWidth; p.classList.add('enter');
+      }
+    });
+    const t = tabs[i], bar = t.parentElement;
+    bar.scrollTo({ left: t.offsetLeft - (bar.clientWidth - t.offsetWidth) / 2, behavior: 'smooth' });
+    tPos.textContent = `${i + 1} / ${tabs.length} · glissez pour changer`;
+    if (focus) t.focus();
   };
-  track.addEventListener('scroll', upd, { passive: true }); upd();
-  let down = false, sx = 0, sl = 0;
-  track.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; sx = e.clientX; sl = track.scrollLeft; track.style.scrollSnapType = 'none'; });
-  addEventListener('pointerup', () => { if (!down) return; down = false; track.style.scrollSnapType = ''; });
-  addEventListener('pointermove', e => { if (down) track.scrollLeft = sl - (e.clientX - sx); });
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(i));
+    t.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(i + 1, true); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); show(i - 1, true); }
+    });
+  });
+  $('#tNext').addEventListener('click', () => show(cur + 1));
+  $('#tPrev').addEventListener('click', () => show(cur - 1));
+  const panels = $('#panels');
+  let tx = null, ty = null;
+  panels.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  panels.addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) show(cur + (dx < 0 ? 1 : -1));
+    tx = ty = null;
+  }, { passive: true });
+
+  /* ---- Horaires : on surligne le jour ---- */
+  const today = new Date().getDay();
+  $$('#week li').forEach(li => { if (+li.dataset.d === today) li.classList.add('today'); });
 
   request();
 })();
