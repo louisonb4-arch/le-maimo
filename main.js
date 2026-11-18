@@ -72,8 +72,15 @@
     let nat = 0; $$('.ch', mast).forEach(c => nat += c.offsetWidth);
     mast.style.fontSize = (100 * mast.clientWidth / nat * .97) + 'px';
   };
+  const hTitle = $('.hero h1');
+  const fitTitle = () => {
+    if (innerWidth >= 900) { hTitle.style.fontSize = ''; return; }
+    hTitle.style.fontSize = '100px';
+    const widest = Math.max(...$$('.line>span', hTitle).map(s => s.offsetWidth));
+    hTitle.style.fontSize = (100 * hTitle.clientWidth / widest * .98) + 'px';
+  };
   const fit = () => {
-    fitMast();
+    fitMast(); fitTitle();
     build();
     bw.style.fontSize = '100px';
     const w = foo.clientWidth - parseFloat(getComputedStyle(foo).paddingLeft) * 2;
@@ -91,6 +98,7 @@
     // En-tête et barre de réservation
     const heroEnd = hero.offsetHeight - 80;
     top.classList.toggle('light', y < heroEnd);
+    top.classList.toggle('solid-l', y > 30 && y < heroEnd);
     top.classList.toggle('solid', y >= heroEnd);
     if (y > heroEnd && y > lastY + 4 && !body.classList.contains('menu-open')) top.classList.add('hide');
     if (y < lastY - 4) top.classList.remove('hide');
