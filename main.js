@@ -143,12 +143,18 @@
   stick(); fontsReady.then(stick);
   fit();
   fontsReady.then(() => { fit(); request(); });
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('400 100px "Climate Crisis"').then(() => { fit(); stick(); request(); }).catch(() => {});
+    document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', () => { fit(); stick(); request(); });
+  }
 
   /* ---- Incontournables : rail de cartes ---- */
   const rl = $('#rail'), dishes = $$('.dish', rl), sigN = $('#sigN'), sigBar = $('#sigBar');
   let rt = false;
+  const gridRail = () => innerWidth >= 1200;
   function rail() {
     rt = false;
+    if (gridRail()) { dishes.forEach(d => { d.style.transform = ''; const img = $('img', d); if (img) img.style.transform = ''; }); return; }
     const rc = rl.getBoundingClientRect(), mid = rc.left + rc.width / 2;
     let best = 0, bd = 1e9;
     dishes.forEach((d, i) => {

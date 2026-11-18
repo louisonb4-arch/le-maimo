@@ -96,6 +96,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .brand{display:flex;align-items:center;gap:10px;min-height:44px;font-family:var(--f-round);font-weight:700;font-size:1.25rem;letter-spacing:.01em}
 .brand svg{width:26px;height:28px;color:var(--coral)}
 .top .actions{display:flex;align-items:center;gap:10px}
+.dnav,.dk{display:none}
 .top .btn{padding:.6em 1.1em;font-size:.9rem;min-height:44px}
 .burger{width:44px;height:44px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(247,240,230,.12)}
 .burger span{display:block;width:18px;height:2px;background:currentColor;border-radius:2px;transition:transform .4s var(--ease)}
@@ -329,37 +330,113 @@ footer .evin{margin-top:4px;font-size:.8rem;color:rgba(247,240,230,.75)}
 
 /* ---------- Desktop ---------- */
 @media (min-width:900px){
-  .top .btn{padding:.7em 1.3em;font-size:.95rem}
-  .wrap{padding:140px var(--pad)}
-  .hero{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr auto;column-gap:4vw;padding:96px 6vw 48px}
-  .hero .mast,.hero .band{grid-column:1/-1}
-  .hero .phw{grid-column:2;grid-row:3/5;min-height:56vh}
-  .hero h1{grid-column:1;grid-row:3;align-self:end;font-size:clamp(3rem,5.2vw,6rem)}
-  .hero .pills{grid-column:1;grid-row:4}
-  .svc .panel>.in{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr;column-gap:6vw;padding:120px 8vw 60px;align-content:center}
-  .svc .kicker{grid-column:1/-1}
-  .svc .hour{grid-column:1;grid-row:2;font-size:clamp(8rem,17vw,17rem)}
-  .svc .ph{grid-column:2;grid-row:2/4;margin-top:0;aspect-ratio:4/5;max-height:72vh;align-self:start}
-  .svc .body{grid-column:1;grid-row:3}
-  .sig .hd{padding:0 8vw}
-  .rail{padding:40px 8vw 14px}
-  .dish{width:24vw;max-width:none}
-  .sig .foot{margin:18px 8vw 0}
-  .amb{padding:140px 8vw}
-  .mos{grid-template-columns:repeat(4,1fr)}
-  .mos .col:nth-child(2){margin-top:90px}
-  .amb .proof{grid-template-columns:1fr 1fr;max-width:900px}
-  .carte{padding:140px 8vw}
-  .sheet{max-width:980px;margin-left:auto;margin-right:auto;padding:44px 52px}
-  .tp .list{columns:2;column-gap:56px}
-  .tp .item{break-inside:avoid}
-  .grp{padding:140px 8vw;display:grid;grid-template-columns:1fr 1fr;column-gap:6vw;align-items:center}
-  .grp .ph{grid-row:1/8}
-  .grp h2{margin-top:0}
-  .infos{padding:140px 8vw;display:grid;grid-template-columns:1fr 1fr;column-gap:6vw}
-  .infos .left{grid-column:1}
-  .infos .right{grid-column:2}
+  :root{--dpad:clamp(48px,6vw,110px)}
   .dock{display:none}
+  .h2{font-size:min(5.4vw,4.8rem)}
+
+  /* En-tête : vraie navigation */
+  .top{padding:18px var(--dpad)}
+  .top .btn{padding:.7em 1.3em;font-size:.95rem}
+  .burger{display:none}
+  .dnav{display:flex;gap:clamp(18px,2.2vw,36px);position:absolute;left:50%;transform:translateX(-50%)}
+  .dnav a{position:relative;padding:12px 0;font-family:var(--f-round);font-weight:600;font-size:.95rem}
+  .dnav a::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:2px;border-radius:2px;background:var(--coral);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+  .dnav a:hover::after,.dnav a:focus-visible::after{transform:scaleX(1)}
+
+  /* Hero : couverture de magazine */
+  .hero{height:100vh;min-height:640px;padding:calc(78px + 2.6vw) var(--dpad) 40px;display:grid;grid-template-columns:1fr 1.08fr;grid-template-rows:auto auto 1fr auto auto auto;column-gap:clamp(36px,4vw,72px)}
+  .hero .mast,.hero .band{grid-column:1/-1}
+  .hero .band{font-size:.85rem;padding:10px 0}
+  .hero .phw{grid-column:2;grid-row:3/7;margin-top:22px;min-height:0}
+  .hero .ph{border-radius:28px}
+  .hero h1{grid-column:1;grid-row:4;align-self:end;margin-top:0;white-space:normal;font-size:min(4.7vw,8.6vh)}
+  .hero .lede{display:block;grid-column:1;grid-row:5;margin-top:18px;max-width:44ch;font-size:clamp(1rem,1.15vw,1.15rem);line-height:1.55;opacity:0;transform:translateY(10px);transition:all .8s var(--ease) 1.15s}
+  .hero .hcta{display:flex;gap:10px;grid-column:1;grid-row:6;margin-top:22px;opacity:0;transform:translateY(10px);transition:all .8s var(--ease) 1.3s}
+  .hero .hcta .btn{min-height:52px}
+  .hero .pills{display:none}
+  body.ready .hero .lede,body.ready .hero .hcta{opacity:1;transform:none}
+
+  /* Midi / soir : affiche plein écran */
+  .svc .panel>.in{display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:auto 1fr;column-gap:clamp(40px,6vw,110px);padding:110px var(--dpad) 70px;align-items:center}
+  .svc .kicker{grid-column:1/-1;font-size:.9rem}
+  .svc .hour{grid-column:1;grid-row:2;align-self:start;margin-top:4vh;font-size:min(15vw,30vh)}
+  .svc .body{grid-column:1;grid-row:2;align-self:end}
+  .svc .body .txt{max-width:46ch}
+  .svc .ph{grid-column:2;grid-row:2;margin-top:0;width:100%;aspect-ratio:4/5;max-height:min(72vh,720px);align-self:center;justify-self:end;border-radius:28px}
+  .svc h3{margin-top:0;font-size:min(3.9vw,8vh);white-space:nowrap}
+  .svc .txt{font-size:1.15rem;line-height:1.6}
+  .svc .tags{display:flex}
+  .svc .go{margin-top:22px}
+
+  /* Les incontournables */
+  .sig{padding:130px 0 120px;margin-top:-30px}
+  .sig .hd{padding:0 var(--dpad);align-items:flex-end}
+  .sig .sigp{display:block;max-width:34ch;font-size:1.08rem;line-height:1.55;color:#3a3f2a;margin-bottom:8px}
+  .rail{padding:48px var(--dpad) 14px;scroll-padding:0 var(--dpad)}
+  .dish{width:34vw;max-width:420px}
+  .sig .foot{margin:18px var(--dpad) 0}
+
+  /* Chez Maïmo */
+  .amb{padding:130px var(--dpad) 120px;display:grid;grid-template-columns:1.2fr 1fr;column-gap:6vw;align-items:end}
+  .amb .kicker{grid-column:1;grid-row:1}
+  .amb h2{grid-column:1;grid-row:2}
+  .amb .proof{grid-column:2;grid-row:1/3;align-self:end;margin-top:0;grid-template-columns:1fr}
+  .mos{grid-column:1/-1;grid-row:3;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:64px;align-items:start}
+  .mos .col{display:contents}
+  .mos figure:nth-child(2){margin-top:90px}
+  .mos .col:nth-child(2) figure:nth-child(1){margin-top:40px}
+  .mos .col:nth-child(2) figure:nth-child(2){margin-top:120px}
+  .mos .ph{border-radius:24px}
+  .amb .cta{grid-column:1;grid-row:4;justify-self:start;margin-top:40px}
+
+  /* La carte */
+  .carte{padding:130px var(--dpad) 120px;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center}
+  .carte>.kicker{justify-self:center}
+  .sheet{width:100%;max-width:1120px;padding:52px 60px 44px;border-radius:36px}
+  .sheet .hd h2{font-size:clamp(3.4rem,6vw,6rem)}
+  .sheet .hd svg{width:44px;height:84px}
+  .tabs{margin:30px 0 0;padding:2px 0 4px;justify-content:flex-start;flex-wrap:wrap}
+  .tp .list{columns:2;column-gap:64px}
+  .tp .item{break-inside:avoid}
+  .item b{font-size:1.12rem}
+  .swipe{display:none}
+  .carte .note{text-align:center;max-width:70ch}
+  .carte .cta{justify-self:center}
+
+  /* Groupes */
+  .grp{padding:130px var(--dpad) 120px;display:grid;grid-template-columns:1fr 1fr;column-gap:6vw;align-items:center}
+  .grp .ph{grid-row:1/8;aspect-ratio:4/5;max-height:80vh;width:100%}
+  .grp h2{margin-top:0;font-size:min(6.4vw,13vh)}
+  .grp .nums b{font-size:3rem}
+  .grp li{font-size:1.08rem}
+  .grp .cta{justify-self:start}
+
+  /* Infos */
+  .infos{padding:130px var(--dpad) 120px;display:grid;grid-template-columns:1fr 1fr;column-gap:6vw;align-items:start}
+  .infos .left{grid-column:1}
+  .infos .right{grid-column:2;padding-top:calc(.8125rem + 12px)}
+  .infos h2{font-size:clamp(3rem,5.6vw,6rem)}
+  .infos dl{margin-top:0}
+  .infos dl>div{grid-template-columns:140px 1fr;padding:20px 0}
+  .infos dd{font-size:1.12rem}
+
+  /* Pied de page */
+  footer{padding:90px var(--dpad) 28px}
+
+  /* Survol (souris uniquement) */
+  .btn:hover{transform:translateY(-2px)}
+  .dish img,.mos .ph img,.grp .ph img,.svc .ph img{transition:transform 1.2s var(--ease)}
+  .dish:hover img{transform:scale(1.06)!important}
+  .mos figure:hover .ph img,.grp .ph:hover img{transform:scale(1.05)}
+}
+@media (min-width:1200px){
+  .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;overflow:visible;scroll-snap-type:none;cursor:auto}
+  .dish{width:auto;max-width:none;aspect-ratio:3/4.5;transition:transform .5s var(--ease)}
+  .dish:hover{transform:translateY(-8px)!important}
+  .dish h3{font-size:min(1.55vw,2rem)}
+  .dish p{font-size:.92rem}
+  .dish.more h3{font-size:min(2.1vw,2.6rem)}
+  .sig .foot{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -408,6 +485,9 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
 <!-- ============ Header ============ -->
 <header class="top" id="top">
   <a class="brand" href="#accueil" aria-label="Maïmo, accueil"><svg viewBox="0 0 120 130"><use href="#m"/></svg>Maïmo</a>
+  <nav class="dnav" aria-label="Navigation principale">
+    <a href="#moments">Midi &amp; soir</a><a href="#signatures">Nos plats</a><a href="#lieu">Le lieu</a><a href="#carte">La carte</a><a href="#groupes">Groupes</a><a href="#infos">Infos</a>
+  </nav>
   <div class="actions">
     <a class="btn btn--coral" href="https://widget.privateaser.com/v/ad64e9dd-56777" target="_blank" rel="noopener">Réserver</a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button>
@@ -438,6 +518,8 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
     <span class="line"><span>Mezzés, vins</span></span>
     <span class="line"><span>&amp; <em>soleil.</em></span></span>
   </h1>
+  <p class="dk lede">Pitas et bowls le midi, mezzés à partager le soir. Une cantine méditerranéenne entre Viarme et Talensac, sélectionnée par Gault&amp;Millau 2026.</p>
+  <div class="dk hcta"><a class="btn btn--coral" href="https://widget.privateaser.com/v/ad64e9dd-56777" target="_blank" rel="noopener">Réserver une table <span class="arr">→</span></a><a class="btn btn--line" href="#carte">Voir la carte</a></div>
   <div class="pills"><span>Mar → sam</span><span>Midi &amp; soir</span><span>4,7 ★ Google</span></div>
 </section>
 
@@ -470,6 +552,7 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
 <section class="sig" id="signatures">
   <div class="hd">
     <div><p class="kicker" data-r>Les incontournables</p><h2 class="display h2" data-r>Ce qu'on<br>commande<br>en premier.</h2></div>
+    <p class="dk sigp" data-r>Quatre assiettes qu'on voit passer à chaque table. Le reste se découvre sur la carte du soir, à partager au centre.</p>
       </div>
   <div class="rail" id="rail">
     <article class="dish"><img src="img/kefta.webp" srcset="img/kefta-600.webp 600w, img/kefta.webp 888w" sizes="(min-width:900px) 24vw, 76vw" alt="Kefta Maïmo : keftas grillées sur labneh" loading="lazy"><span class="n">Chaud devant</span>
