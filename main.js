@@ -64,7 +64,7 @@
   const build = () => {
     const rows = ['MAÏMO'];
     if (rows.join() === layout) return; layout = rows.join();
-    bw.innerHTML = rows.map(r => `<div class="row">${[...r].map(c => `<span class="ch">${c}</span>`).join('')}</div>`).join('');
+    bw.innerHTML = rows.map(r => `<div class="row">${[...r].map((c, i) => `<span class="ch" style="--i:${i}">${c}</span>`).join('')}</div>`).join('');
     chs = $$('.ch', bw);
   };
   const fit = () => {
@@ -78,7 +78,7 @@
   function frame() {
     ticking = false;
     const y = scrollY, vh = innerHeight, vw = innerWidth, mobile = vw < 900;
-    const hr = hero.getBoundingClientRect(), fr = foo.getBoundingClientRect(), wr = bw.getBoundingClientRect();
+    const hr = hero.getBoundingClientRect(), fr = foo.getBoundingClientRect();
     const tr = htitle.getBoundingClientRect();
     const p2top = p2.getBoundingClientRect().top;
     const colRects = cols.map(c => c.parentElement.getBoundingClientRect());
@@ -124,20 +124,19 @@
       cols[0].style.transform = `translateY(${c * -20}px)`;
     }
 
-    // Footer : lettres qui jaillissent
-    // départ quand le haut du mot entre à l'écran, fin quand on est tout en bas de la page
-    const endTop = vh - (fr.bottom - wr.bottom) - wr.height;
-    const fp = reduce ? 1 : clamp((vh - wr.top) / Math.max(1, vh - endTop));
-    chs.forEach((c, i) => {
-      const k = clamp((fp - i * .1) / .55), e = back(k);
-      c.style.transform = `translateY(${(1 - e) * 120}%) rotate(${(1 - e) * (i % 2 ? 30 : -30)}deg) scale(${.55 + .45 * e})`;
-      c.style.opacity = k > 0 ? 1 : 0;
-    });
   }
   addEventListener('scroll', request, { passive: true });
   // Panneaux midi/soir plus hauts que l'écran : ils collent seulement une fois leur bas atteint
   const stick = () => $$('.svc .panel').forEach(p => { p.style.top = Math.min(0, innerHeight - p.offsetHeight) + 'px'; });
-  addEventListener('resize', () => { fit(); stick(); request(); rail(); });
+  // iPhone : la barre de Safari déclenche des « resize » en hauteur pendant le scroll ; on ne recalcule que si la largeur change
+  let lastW = innerWidth;
+  addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; fit(); } stick(); request(); rail(); });
+  // Footer : le mot jaillit lettre par lettre quand il est bien visible, et se rejoue à chaque passage
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.intersectionRatio > .55) bw.classList.add('go');
+    else if (!e.isIntersecting) bw.classList.remove('go');
+  }), { threshold: [0, .55] }).observe(bw);
+  if (reduce) bw.classList.add('go');
   stick(); fontsReady.then(stick);
   fit();
   fontsReady.then(() => { fit(); request(); });

@@ -104,7 +104,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .menu-open .burger span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
 
 /* Nav overlay */
-.nav{position:fixed;inset:0;z-index:45;background:var(--coral);color:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;
+.nav{position:fixed;left:0;right:0;top:0;height:100vh;height:100dvh;overflow-y:auto;z-index:45;background:var(--coral);color:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;
   padding:110px var(--pad) calc(env(safe-area-inset-bottom) + 32px);clip-path:circle(0% at calc(100% - 44px) 36px);transition:clip-path .8s var(--ease-io);visibility:hidden}
 .menu-open .top{color:var(--ink)}
 .menu-open .top .brand svg{color:var(--ink)}
@@ -113,7 +113,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .menu-open .nav{clip-path:circle(150% at calc(100% - 44px) 36px);visibility:visible}
 .nav ol{list-style:none;counter-reset:n}
 .nav li{overflow:hidden;border-bottom:1.5px solid rgba(31,36,22,.2)}
-.nav li a{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;font-family:var(--f-display);font-size:clamp(1.6rem,7.4vw,3rem);text-transform:uppercase;line-height:1;
+.nav li a{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;font-family:var(--f-display);font-size:min(7.4vw,5.4svh,3rem);white-space:nowrap;text-transform:uppercase;line-height:1;
   transform:translateY(110%);transition:transform .7s var(--ease)}
 .nav li a::after{counter-increment:n;content:"0" counter(n);font-family:var(--f-round);font-size:.85rem;font-weight:600}
 .menu-open .nav li a{transform:none}
@@ -191,7 +191,7 @@ section{position:relative;scroll-margin-top:64px}
   .svc .go{margin-top:14px}
 }
 /* ---------- Les incontournables : rail de cartes ---------- */
-.sig{background:var(--cream);color:var(--olive);padding:96px 0 84px;overflow:hidden}
+.sig{position:relative;z-index:2;margin-top:-30px;border-radius:30px 30px 0 0;background:var(--cream);color:var(--olive);padding:96px 0 84px;overflow:hidden}
 .sig .hd{padding:0 var(--pad);display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
 .sig .kicker{color:var(--coral-t)}
 .sig h2{margin-top:12px}
@@ -301,7 +301,11 @@ footer{position:relative;background:var(--olive);color:var(--cream);padding:64px
 footer .kicker{color:var(--rose)}
 footer .big{margin-top:18px;font-family:var(--f-display);color:var(--coral);line-height:.84;text-transform:uppercase;white-space:nowrap;font-size:18vw}
 footer .big .row{display:flex;justify-content:space-between}
-footer .big .ch{display:inline-block;transform-origin:50% 100%;will-change:transform}
+footer .big .ch{display:inline-block;transform-origin:50% 100%;transform:translateY(115%) rotate(var(--r,-28deg)) scale(.6);opacity:0;
+  transition:transform 1s cubic-bezier(.34,1.56,.64,1),opacity .35s;transition-delay:calc(var(--i,0) * 90ms)}
+footer .big .ch:nth-child(even){--r:28deg}
+footer .big.go .ch{transform:none;opacity:1}
+footer .big .row{overflow:hidden;padding-top:.08em;margin-top:-.08em}
 footer .legal{margin-top:34px;padding-top:16px;border-top:1.5px solid rgba(247,240,230,.18);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px}
 footer .small{font-family:var(--f-round);font-weight:500;font-size:.85rem;color:rgba(247,240,230,.75)}
 footer .small a{display:inline-block;padding:10px 0;text-decoration:underline;text-underline-offset:3px}
@@ -398,7 +402,7 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
 <nav class="nav" id="nav" aria-label="Navigation">
   <ol>
     <li><a href="#moments">Midi &amp; soir</a></li>
-    <li><a href="#signatures">Incontournables</a></li>
+    <li><a href="#signatures">Nos plats</a></li>
     <li><a href="#lieu">Le lieu</a></li>
     <li><a href="#carte">La carte</a></li>
     <li><a href="#groupes">Groupes</a></li>
