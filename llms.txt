@@ -16,5 +16,5 @@
 - Desserts : Affogato à la fleur d'oranger 5 €, Sugar Souk 7 € (13,5 € à partager), Cookie 5,5 €
 
 ## Pages
-- [Accueil et carte](__SITE_URL__/)
-- [Mentions légales](__SITE_URL__/mentions-legales)
+- [Accueil et carte](https://le-maimo.vercel.app/)
+- [Mentions légales](https://le-maimo.vercel.app/mentions-legales)
