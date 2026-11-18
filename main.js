@@ -54,7 +54,7 @@
 
   /* ---- Références pour le scroll ---- */
   const top = $('#top'), dock = $('#dock');
-  const hero = $('#accueil'), arch = $('#arch'), archImg = $('img', arch), hshade = $('#hshade'), hbadge = $('#hbadge'), htitle = $('#htitle');
+  const hero = $('#accueil'), mast = $('#mast'), heroImg = $('.hero .ph img');
   const p1in = $('#p1 .in'), p2 = $('#p2');
   const cols = $$('#mos .col');
   const bw = $('#bigword'), foo = $('#foot');
@@ -67,7 +67,13 @@
     bw.innerHTML = rows.map(r => `<div class="row">${[...r].map((c, i) => `<span class="ch" style="--i:${i}">${c}</span>`).join('')}</div>`).join('');
     chs = $$('.ch', bw);
   };
+  const fitMast = () => {
+    mast.style.fontSize = '100px';
+    let nat = 0; $$('.ch', mast).forEach(c => nat += c.offsetWidth);
+    mast.style.fontSize = (100 * mast.clientWidth / nat * .97) + 'px';
+  };
   const fit = () => {
+    fitMast();
     build();
     bw.style.fontSize = '100px';
     const w = foo.clientWidth - parseFloat(getComputedStyle(foo).paddingLeft) * 2;
@@ -79,35 +85,24 @@
     ticking = false;
     const y = scrollY, vh = innerHeight, vw = innerWidth, mobile = vw < 900;
     const hr = hero.getBoundingClientRect(), fr = foo.getBoundingClientRect();
-    const tr = htitle.getBoundingClientRect();
     const p2top = p2.getBoundingClientRect().top;
     const colRects = cols.map(c => c.parentElement.getBoundingClientRect());
 
     // En-tête et barre de réservation
-    const heroEnd = hero.offsetHeight - vh;
-    top.classList.toggle('solid', y > heroEnd - 10);
+    const heroEnd = hero.offsetHeight - 80;
+    top.classList.toggle('light', y < heroEnd);
+    top.classList.toggle('solid', y >= heroEnd);
     if (y > heroEnd && y > lastY + 4 && !body.classList.contains('menu-open')) top.classList.add('hide');
     if (y < lastY - 4) top.classList.remove('hide');
     dock.classList.toggle('show', y > heroEnd * .9 && fr.top > vh * .85);
     lastY = y;
 
-    // Hero : l'arche monte à l'ouverture, puis s'ouvre en plein écran au scroll
-    if (hr.bottom > 0) {
-      const r = body.classList.contains('ready') ? (reduce ? 1 : ease(clamp((performance.now() - revealStart) / 1300))) : 0;
-      const p = reduce ? 0 : clamp(-hr.top / Math.max(1, hr.height - vh));
-      const t = ease(clamp(p / .85));
-      const x0 = mobile ? vw * .07 : vw * .3;
-      const t0 = (mobile ? 128 : 120);
-      const b0 = Math.max(80, vh - (tr.top + (tr.height / 3) * .55) + (hr.top < 0 ? 0 : 0));
-      const top0 = lerp(vh - b0, t0, r);
-      const inTop = lerp(top0, 0, t), inX = lerp(x0, 0, t), inB = lerp(b0, 0, t);
-      const rad = lerp((vw - 2 * x0) / 2, 0, t);
-      arch.style.clipPath = `inset(${inTop}px ${inX}px ${inB}px ${inX}px round ${rad}px ${rad}px 0 0)`;
-      archImg.style.transform = `scale(${lerp(1.18, 1, Math.max(t, r * .4))})`;
-      hshade.style.opacity = t;
-      const bs = hbadge.offsetWidth;
-      hbadge.style.transform = `translate(${vw - x0 - bs * .78}px, ${top0 + (vw - 2 * x0) * .12}px) rotate(${p * 120}deg)`;
-      hbadge.style.opacity = r * (1 - clamp(t * 3));
+    // Hero : la une glisse doucement au scroll
+    if (!reduce && hr.bottom > 0 && performance.now() - revealStart > 2600 && body.classList.contains('ready')) {
+      const k = Math.min(y, vh);
+      heroImg.style.transition = 'none';
+      heroImg.style.transform = `scale(${1.04 + k * .00025}) translateY(${k * .05}px)`;
+      mast.style.transform = `translateY(${k * .18}px)`;
     }
 
     // Midi / soir : le panneau du midi recule quand le soir arrive
