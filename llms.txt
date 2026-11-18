@@ -1,0 +1,20 @@
+# Maïmo — Cantine & mezzés à partager (Nantes)
+
+> Restaurant méditerranéen au 34 rue Léon Jamin, 44000 Nantes, entre Viarme et Talensac, près de la Tour Bretagne. Le midi : pitas, focaccias, bowls et salades, sur place ou à emporter. Le soir : mezzés à partager, vins et cocktails avec ou sans alcool. Sélectionné par Gault&Millau 2026.
+
+## Infos pratiques
+- Adresse : 34 rue Léon Jamin, 44000 Nantes (tram L3 Jean Jaurès, L2 50 Otages)
+- Horaires : du mardi au samedi, midi 12h–14h et soir dès 19h ; fermé dimanche et lundi
+- Téléphone : 09 74 64 05 04
+- Réservation : https://widget.privateaser.com/v/ad64e9dd-56777
+- Groupes et privatisation (15 à 22 personnes) : https://www.privateaser.com/lieu/56777-maimo-nantes
+- Instagram : https://www.instagram.com/maimo.nantes/
+
+## Carte du soir (extraits, prix TTC)
+- Halloumi Bang Bang 7,5 € · Kefta Maïmo 11 € · Crunchy Chicken 11 € · Ail Ail Ail Falaf' 7 €
+- Surprise Houmous 6 € · Labneh Disco 7 € · Dolmas Pop 5 € · Green Dip 6 €
+- Desserts : Affogato à la fleur d'oranger 5 €, Sugar Souk 7 € (13,5 € à partager), Cookie 5,5 €
+
+## Pages
+- [Accueil et carte](__SITE_URL__/)
+- [Mentions légales](__SITE_URL__/mentions-legales)
