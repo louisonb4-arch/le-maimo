@@ -58,7 +58,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ---------- Typo ---------- */
 .display{font-family:var(--f-display);font-weight:400;line-height:.92;letter-spacing:-.01em;text-transform:uppercase}
-.kicker{font-family:var(--f-round);font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}
+.kicker{font-family:var(--f-round);font-weight:600;font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase}
 .round{font-family:var(--f-round)}
 
 /* ---------- Boutons ---------- */
@@ -161,45 +161,35 @@ section{position:relative;scroll-margin-top:64px}
 [data-clip]{clip-path:inset(0 0 100% 0 round var(--r));transition:clip-path 1.2s var(--ease-io)}
 [data-clip].in{clip-path:inset(0 0 0 0 round var(--r))}
 
-/* ---------- La vitrine (pin + lettres qui pivotent au scroll) ---------- */
-.vit{height:280vh;background:var(--olive)}
-.vit .pin{position:sticky;top:0;height:100svh;overflow:hidden}
-.vit .bg,.vit .bg2{position:absolute;inset:0;will-change:transform,opacity}
-.vit .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,36,22,.4),rgba(31,36,22,.82));will-change:opacity}
-.vit .glass{position:absolute;left:-30%;top:0;width:60%;height:100%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.09),rgba(255,255,255,0));will-change:transform;pointer-events:none}
-.vit .k{position:absolute;left:var(--pad);top:calc(env(safe-area-inset-top) + 86px);color:var(--rose)}
-.vit .words{position:absolute;left:var(--pad);right:var(--pad);top:calc(env(safe-area-inset-top) + 124px);perspective:900px;color:var(--cream);font-size:clamp(2.9rem,14.4vw,6.4rem)}
-.vit .ln{display:block;transform-origin:50% 50%;will-change:transform}
-.vit .ln.pita{font-size:1.55em;line-height:.86;transition:color .5s}
-.vit .ln.pita.on{color:var(--coral)}
-.vit .sub{position:absolute;left:var(--pad);right:var(--pad);bottom:calc(env(safe-area-inset-bottom) + 96px);color:var(--cream);opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.vit .sub p{font-size:1.02rem;line-height:1.45;max-width:30ch}
-.vit .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.vit .pills span{font-family:var(--f-round);font-weight:600;font-size:.85rem;padding:.5em .9em;border-radius:999px;background:var(--cream);color:var(--olive)}
-.vit .sub small{display:block;margin-top:12px;font-size:.82rem;color:rgba(247,240,230,.75)}
-.vit .sub.on{opacity:1;transform:none}
-.vit .hint{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 92px);text-align:center;color:var(--rose);font-family:var(--f-round);font-weight:600;font-size:.85rem;transition:opacity .4s}
-
 /* ---------- Midi / Soir : deux panneaux qui s'empilent ---------- */
 .svc{position:relative}
 .svc .panel{position:sticky;top:0;min-height:100svh;overflow:hidden}
-.svc .panel>.in{min-height:100svh;padding:calc(env(safe-area-inset-top) + 86px) var(--pad) calc(env(safe-area-inset-bottom) + 40px);display:flex;flex-direction:column;transform-origin:50% 0;will-change:transform,filter}
+.svc .panel>.in{min-height:100svh;padding:calc(env(safe-area-inset-top) + 84px) var(--pad) calc(env(safe-area-inset-bottom) + 104px);display:flex;flex-direction:column;transform-origin:50% 0;will-change:transform,filter}
 .svc .p1{background:var(--cream);color:var(--olive)}
 .svc .p2{background:var(--olive);color:var(--cream);box-shadow:0 -30px 60px rgba(0,0,0,.25);border-radius:28px 28px 0 0}
 .svc .kicker{display:flex;justify-content:space-between}
 .svc .p1 .kicker{color:var(--coral-t)}
 .svc .p2 .kicker{color:var(--rose)}
-.svc .hour{margin-top:10px;font-size:clamp(5rem,31vw,17rem);line-height:.78;color:var(--coral-d)}
+.svc .hour{margin-top:10px;font-size:min(31vw,19svh);line-height:.78;color:var(--coral-d)}
 .svc .p2 .hour{color:var(--coral)}
-.svc .ph{position:relative;margin-top:18px;aspect-ratio:4/3;border-radius:22px;overflow:hidden}
+.svc .ph{position:relative;margin-top:18px;aspect-ratio:4/3;max-height:28svh;border-radius:22px;overflow:hidden}
 .svc .ph img{transform:scale(1.08);transition:transform 1.6s var(--ease)}
 .svc .panel.in-view .ph img{transform:scale(1)}
 .svc h3{margin-top:20px;font-size:clamp(2rem,9.4vw,4rem)}
 .svc .txt{margin-top:10px;font-size:1.04rem;line-height:1.5;max-width:38ch}
 .svc .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .svc .tags span{font-family:var(--f-round);font-weight:500;font-size:.86rem;padding:.4em .95em;border-radius:999px;border:1.5px solid currentColor}
-.svc .go{margin-top:20px;align-self:flex-start}
+.svc .go{margin-top:16px;align-self:flex-start}
 
+@media (max-width:899px) and (max-height:760px){
+  .svc .panel>.in{padding-top:calc(env(safe-area-inset-top) + 72px)}
+  .svc .hour{font-size:min(31vw,15svh)}
+  .svc .ph{margin-top:14px;max-height:24svh}
+  .svc h3{margin-top:14px}
+  .svc .txt{font-size:.98rem;line-height:1.42}
+  .svc .tags{display:none}
+  .svc .go{margin-top:14px}
+}
 /* ---------- Les incontournables : rail de cartes ---------- */
 .sig{background:var(--cream);color:var(--olive);padding:96px 0 84px;overflow:hidden}
 .sig .hd{padding:0 var(--pad);display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
@@ -243,7 +233,7 @@ section{position:relative;scroll-margin-top:64px}
 .amb .stamp .c.alt{background:var(--rose);font-size:.95rem}
 .amb .stamp b{display:block;font-family:var(--f-round);font-weight:600;font-size:1.05rem}
 .amb .stamp span{font-size:.9rem;color:rgba(247,240,230,.82)}
-.amb .stamp small{display:block;margin-top:2px;font-size:.78rem;color:rgba(247,240,230,.7)}
+.amb .stamp small{display:block;margin-top:2px;font-size:.8125rem;color:rgba(247,240,230,.7)}
 .amb .cta{margin-top:24px}
 
 /* ---------- La carte : une feuille de menu à onglets ---------- */
@@ -301,21 +291,21 @@ section{position:relative;scroll-margin-top:64px}
 .week li.today .d::after{content:"Aujourd'hui";margin-left:8px;font-size:.72rem;padding:.2em .6em;border-radius:999px;background:var(--coral);color:var(--ink);vertical-align:2px}
 .infos dl{margin-top:22px}
 .infos dl>div{display:grid;grid-template-columns:100px 1fr;gap:12px;padding:16px 0;border-top:1.5px solid rgba(46,53,32,.14)}
-.infos dt{font-family:var(--f-round);font-weight:600;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-t);padding-top:3px}
+.infos dt{font-family:var(--f-round);font-weight:600;font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-t);padding-top:3px}
 .infos dd{font-size:1.04rem}
 .infos dd a{display:inline-block;padding:6px 0;border-bottom:1.5px solid var(--coral)}
 .infos .cta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px}
 .infos .btn--line{color:var(--olive)}
 
-footer{position:relative;background:var(--olive);color:var(--cream);padding:0 var(--pad);overflow:hidden}
-footer .inner{border-top:1.5px solid rgba(247,240,230,.18);padding-top:26px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px}
+footer{position:relative;background:var(--olive);color:var(--cream);padding:64px var(--pad) calc(env(safe-area-inset-bottom) + 22px);overflow:hidden}
 footer .kicker{color:var(--rose)}
-footer .big{margin-top:22px;padding-bottom:calc(env(safe-area-inset-bottom) + 28px);font-family:var(--f-display);color:var(--coral);font-size:16vw;line-height:.86;text-transform:uppercase;white-space:nowrap}
-footer .big .row{display:flex}
+footer .big{margin-top:18px;font-family:var(--f-display);color:var(--coral);line-height:.84;text-transform:uppercase;white-space:nowrap;font-size:18vw}
+footer .big .row{display:flex;justify-content:space-between}
 footer .big .ch{display:inline-block;transform-origin:50% 100%;will-change:transform}
+footer .legal{margin-top:34px;padding-top:16px;border-top:1.5px solid rgba(247,240,230,.18);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px}
 footer .small{font-family:var(--f-round);font-weight:500;font-size:.85rem;color:rgba(247,240,230,.75)}
 footer .small a{display:inline-block;padding:10px 0;text-decoration:underline;text-underline-offset:3px}
-footer .evin{margin-top:6px;font-size:.8rem;color:rgba(247,240,230,.75)}
+footer .evin{margin-top:4px;font-size:.8rem;color:rgba(247,240,230,.75)}
 
 /* ---------- Barre mobile ---------- */
 .dock{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 12px);z-index:40;display:flex;gap:8px;padding:8px;border-radius:999px;background:rgba(31,36,22,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -331,10 +321,6 @@ footer .evin{margin-top:6px;font-size:.8rem;color:rgba(247,240,230,.75)}
   .wrap{padding:140px var(--pad)}
   .hero h1{font-size:clamp(4rem,8.6vw,9rem);max-width:70vw}
   .hero .badge{width:140px}
-  .vit .k,.vit .words{left:8vw}
-  .vit .words{font-size:clamp(4rem,8.4vw,8.2rem);max-width:60vw}
-  .vit .sub{left:auto;right:8vw;width:min(34vw,440px);bottom:12vh}
-  .vit .hint{bottom:40px}
   .svc .panel>.in{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr;column-gap:6vw;padding:120px 8vw 60px;align-content:center}
   .svc .kicker{grid-column:1/-1}
   .svc .hour{grid-column:1;grid-row:2;font-size:clamp(8rem,17vw,17rem)}
@@ -366,7 +352,6 @@ footer .evin{margin-top:6px;font-size:.8rem;color:rgba(247,240,230,.75)}
 </style>
 <noscript><style>#intro{display:none!important}body.locked{overflow:auto}[data-r],[data-clip]{opacity:1!important;transform:none!important;clip-path:none!important}
 .hero{height:auto}.hero .pin{position:relative}.hero .arch{clip-path:none!important}.hero .arch img{transform:none}.hero .shade{opacity:1}.hero h1 .line>span{transform:none!important}.hero .kicker,.hero .meta{opacity:1!important;transform:none!important}
-.vit{height:auto}.vit .pin{position:relative;height:auto;min-height:100svh}.vit .sub{opacity:1;transform:none}.vit .hint{display:none}
 .tp[hidden]{display:block}.tabs,.swipe{display:none}.tp{margin-top:22px}
 footer .big::after{content:"MAÏMO"}</style></noscript>
 </head>
@@ -443,25 +428,6 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
   </div>
 </section>
 
-<!-- ============ La vitrine ============ -->
-<section class="vit" id="manifeste">
-  <div class="pin">
-    <div class="bg"><img src="img/interieur.webp" srcset="img/interieur-600.webp 600w, img/interieur.webp 888w" sizes="100vw" alt="La salle de Maïmo vue de l'intérieur : murs vert olive, grandes vitrines sur la rue" loading="lazy"></div>
-    <div class="bg2" style="opacity:0"><img src="img/interieur-flou.webp" alt="" loading="lazy"></div>
-    <div class="veil"></div><div class="glass"></div>
-    <p class="kicker k">Écrit sur notre vitrine</p>
-    <h2 class="words display" id="words" aria-label="Last night pita saved my life.">
-      <span class="ln" aria-hidden="true">Last</span><span class="ln" aria-hidden="true">night</span><span class="ln pita" aria-hidden="true">Pita</span><span class="ln" aria-hidden="true">saved</span><span class="ln" aria-hidden="true">my life.</span>
-    </h2>
-    <p class="hint" aria-hidden="true">↓ Passez la porte</p>
-    <div class="sub">
-      <p>C'est écrit en grand sur notre vitrine, rue Léon Jamin. Et on assume : ici, la pita est cuite sur place et elle accompagne tout.</p>
-      <div class="pills"><span>Pain pita · 2 €</span><span>Garlic pita · 3 €</span><span>Cheesy pita · 3,5 €</span></div>
-      <small>« La pita d'hier soir m'a sauvé la vie. »</small>
-    </div>
-  </div>
-</section>
-
 <!-- ============ Midi / Soir ============ -->
 <section class="svc" id="moments" aria-label="Le midi et le soir">
   <div class="panel p1" id="p1"><div class="in">
@@ -481,7 +447,7 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
     <div class="body">
       <h3 class="display">Les mezzés.</h3>
       <p class="txt">La carte se partage au centre de la table. Vins du sud, cocktails avec ou sans alcool, et une musique qui monte doucement avec la soirée.</p>
-      <div class="tags"><span>Dès 19h</span><span>À partager</span><span>Vins du sud</span><span>Terrasse</span></div>
+      <div class="tags"><span>Dès 19h</span><span>À partager</span><span>Vins du sud</span></div>
       <a class="btn btn--coral go" href="#carte">Voir la carte du soir <span class="arr">→</span></a>
     </div>
   </div></div>
@@ -631,12 +597,13 @@ footer .big::after{content:"MAÏMO"}</style></noscript>
 </main>
 
 <footer id="foot">
-  <div class="inner">
-    <p class="kicker">À très vite rue Léon Jamin</p>
-    <span class="small">© 2026 Maïmo · <a href="mentions-legales.html">Mentions légales</a> · Site par Vokum</span>
+  <p class="kicker">À très vite rue Léon Jamin</p>
+  <div class="big" id="bigword" aria-label="Maïmo"></div>
+  <div class="legal">
+    <span class="small">© 2026 Maïmo · <a href="mentions-legales.html">Mentions légales</a></span>
+    <span class="small">Site par Vokum</span>
   </div>
   <p class="evin">L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
-  <div class="big" id="bigword" aria-label="Maïmo"></div>
 </footer>
 
 <div class="dock" id="dock">

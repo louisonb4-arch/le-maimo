@@ -55,8 +55,6 @@
   /* ---- Références pour le scroll ---- */
   const top = $('#top'), dock = $('#dock');
   const hero = $('#accueil'), arch = $('#arch'), archImg = $('img', arch), hshade = $('#hshade'), hbadge = $('#hbadge'), htitle = $('#htitle');
-  const vit = $('#manifeste'), lns = $$('.ln', vit), vbg = $('.bg', vit), vbg2 = $('.bg2', vit), veil = $('.veil', vit), glass = $('.glass', vit);
-  const pita = $('.pita', vit), vsub = $('.sub', vit), vhint = $('.hint', vit);
   const p1in = $('#p1 .in'), p2 = $('#p2');
   const cols = $$('#mos .col');
   const bw = $('#bigword'), foo = $('#foot');
@@ -64,7 +62,7 @@
 
   // Footer : le mot remplit pile la largeur (2 lignes sur mobile)
   const build = () => {
-    const rows = innerWidth < 700 ? ['MAÏ', 'MO'] : ['MAÏMO'];
+    const rows = ['MAÏMO'];
     if (rows.join() === layout) return; layout = rows.join();
     bw.innerHTML = rows.map(r => `<div class="row">${[...r].map(c => `<span class="ch">${c}</span>`).join('')}</div>`).join('');
     chs = $$('.ch', bw);
@@ -80,7 +78,7 @@
   function frame() {
     ticking = false;
     const y = scrollY, vh = innerHeight, vw = innerWidth, mobile = vw < 900;
-    const hr = hero.getBoundingClientRect(), vr = vit.getBoundingClientRect(), fr = foo.getBoundingClientRect();
+    const hr = hero.getBoundingClientRect(), fr = foo.getBoundingClientRect(), wr = bw.getBoundingClientRect();
     const tr = htitle.getBoundingClientRect();
     const p2top = p2.getBoundingClientRect().top;
     const colRects = cols.map(c => c.parentElement.getBoundingClientRect());
@@ -112,24 +110,6 @@
       hbadge.style.opacity = r * (1 - clamp(t * 3));
     }
 
-    // La vitrine
-    if (vr.bottom > -50 && vr.top < vh + 50) {
-      const p = reduce ? 1 : clamp(-vr.top / (vr.height - vh));
-      lns.forEach((l, i) => {
-        const k = ease(clamp((p - .08 - i * .07) / .3));
-        l.style.transform = `rotateY(${180 * (1 - k)}deg)`;
-        l.style.opacity = .72 + .28 * k;
-      });
-      const z = ease(clamp((p - .15) / .7));
-      vbg.style.transform = vbg2.style.transform = `scale(${1 + z * .35})`;
-      vbg2.style.opacity = z;
-      veil.style.opacity = .85 + z * .15;
-      glass.style.transform = `translateX(${p * 260}%)`;
-      pita.classList.toggle('on', p > .52);
-      vsub.classList.toggle('on', p > .66);
-      vhint.style.opacity = p > .05 ? 0 : 1;
-    }
-
     // Midi / soir : le panneau du midi recule quand le soir arrive
     if (!reduce) {
       const k = clamp(1 - p2top / vh);
@@ -145,9 +125,11 @@
     }
 
     // Footer : lettres qui jaillissent
-    const fp = reduce ? 1 : clamp((vh - fr.top) / Math.min(fr.height, vh));
+    // départ quand le haut du mot entre à l'écran, fin quand on est tout en bas de la page
+    const endTop = vh - (fr.bottom - wr.bottom) - wr.height;
+    const fp = reduce ? 1 : clamp((vh - wr.top) / Math.max(1, vh - endTop));
     chs.forEach((c, i) => {
-      const k = clamp((fp - .05 - i * .08) / .4), e = back(k);
+      const k = clamp((fp - i * .1) / .55), e = back(k);
       c.style.transform = `translateY(${(1 - e) * 120}%) rotate(${(1 - e) * (i % 2 ? 30 : -30)}deg) scale(${.55 + .45 * e})`;
       c.style.opacity = k > 0 ? 1 : 0;
     });
